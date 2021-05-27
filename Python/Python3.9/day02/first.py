@@ -1,0 +1,2 @@
+# -*- coding:gbk -*-
+print("Œ“ «seirin")
