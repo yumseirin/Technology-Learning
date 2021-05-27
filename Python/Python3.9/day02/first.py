@@ -1,2 +1,1 @@
-# -*- coding:gbk -*-
-print("ÎÒÊÇseirin")
+print("æˆ‘æ˜¯seirin")
