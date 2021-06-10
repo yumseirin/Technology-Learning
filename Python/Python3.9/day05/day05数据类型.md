@@ -625,8 +625,8 @@ v1.功能(...)
    print(message[2]) # "点"
    
    print(message[-1]) # 呀
-   print(message[-2]) # 呀
-   print(message[-3]) # 呀
+   print(message[-2]) # 易
+   print(message[-3]) # 交
    ```
 
    注意：字符串中是能通过索引取值，无法修改值。【字符串在内部存储时不允许对内部元素修改，想修改只能重新创建。】
@@ -681,7 +681,7 @@ v1.功能(...)
    
    print( name[ 0:5:2 ] )   # 输出：生不电 【前两个值表示区间范围，最有一个值表示步长】
    print( name[ :8:2 ] )    # 输出：生不电，  【区间范围的前面不写则表示起始范围为0开始】
-   print( name[ 2::3 ] )    # 输出：不电，活电苦 【区间范围的后面不写则表示结束范围为最后】
+   print( name[ 2::3 ] )    # 输出：不影活影 【区间范围的后面不写则表示结束范围为最后】
    print( name[ ::2 ] )     # 输出：生不电，活电苦 【区间范围不写表示整个字符串】
    print( name[ 8:1:-1 ] )  # 输出：活生，影电是不 【倒序】
    ```
@@ -724,7 +724,7 @@ v1.功能(...)
      range(10) # [0,1,2,3,4,5,6,7,8,9]
      range(1,10) # [1,2,3,4,5,6,7,8,9]
      range(1,10,2) # [1,3,5,7,9]
-     range(10,1,-1) # [10,9,8,7,6,5,4,3,2]
+     range(10,1,-1) # [10,9,8,7,6,5,4,3,2] #前取后不取
      ```
 
    - For + range
@@ -864,25 +864,630 @@ num_list[0] = 666
 
 
 
-## 总结
+## 4.列表（list）
 
-1. 整型在Python2和Python3中的区别？
+列表（list），是一个**有序**且**可变**的容器，在里面可以存放**多个不同类型**的元素。
 
-2. 进制之间的转换。
+### 4.1 定义
 
-3. 其他类型转换为布尔类型时，空和0为False，其他均为True。
+```python
+user_list =  ["苍老师","有坂深雪","大桥未久"]
+number_list = [98,88,666,12,-1]
+data_list = [1,True,"Alex","宝强","贾乃亮"]
+```
 
-4. 条件语句中可自动化转换布尔类型来做判断。
+```python
+user_list = []
+user_list.append("铁锤")
+user_list.append(123)
+user_list.append(True)
+print(user_list) # ["铁锤",123,True]
+```
+
+不可变类型：字符串、布尔、整型（已最小，内部数据无法进行修改）
+
+可变类型：列表（内部数据元素可以修改）
+
+
+
+### 4.2 独有功能
+
+Python中为所有的列表类型的数据提供了一批独有的功能。
+
+在开始学习列表的独有功能之前，先来做一个字符串和列表的对比：
+
+- 字符串，不可变，即：创建好之后内部就无法修改。【独有功能都是新创建一份数据】
+
+  ```python
+  name = "alex"
+  data = name.upper()
+  print(name)
+  print(data)
+  ```
+
+- 列表，可变，即：创建好之后内部元素可以修改。【独有功能基本上都是直接操作列表内部，不会创建新的一份数据】
+
+  ```python
+  user_list = ["车子","妹子"]
+  user_list.append("嫂子")
+  
+  print(user_list) # ["车子","妹子","嫂子"]
+  ```
+
+列表中的常见独有功能如下：
+
+1. 追加，在原列表中尾部追加值。
 
    ```python
-   if "武沛齐":
-       print(666)
-   else:
-       print(999)
+   data_list = []
+   
+   v1 = input("请输入姓名")
+   data_list.append(v1)
+   
+   v2 = input("请输入姓名")
+   data_list.append(v2)
+   
+   print(data_list) # ["alex","eric"]
    ```
 
-5. 字符串中常见的独有功能。
+   ```python
+   # 案例1
+   user_list = []
+   
+   while True:
+       user = input("请输入用户名(Q退出)：")
+       if user == "Q":
+           break
+       user_list.append(user)
+       
+   print(user_list) 
+   ```
 
-6. 字符串中常见的公共功能。
+   ```python
+   # 案例2
+   welcome = "欢迎使用NB游戏".center(30, '*')
+   print(welcome)
+   
+   user_count = 0
+   while True:
+       count = input("请输入游戏人数：")
+       if count.isdecimal():
+           user_count = int(count)
+           break
+       else:
+           print("输入格式错误，人数必须是数字。")
+   
+   
+   message = "{}人参加游戏NB游戏。".format(user_count)
+   print(message)
+   
+   
+   user_name_list = []
+   
+   for i in range(1, user_count + 1):
+       tips = "请输入玩家姓名（{}/{}）：".format(i, user_count)
+       name = input(tips)
+       user_name_list.append(name)
+   
+   print(user_name_list)
+   ```
 
-7. 字符串创建之后是不可以被修改的。
+2. 批量追加，将一个列表中的元素逐一添加另外一个列表。
+
+   ```python
+   tools = ["搬砖","菜刀","榔头"]
+   tools.extend( [11,22,33] ) # weapon中的值逐一追加到tools中
+   print(tools) # ["搬砖","菜刀","榔头",11,22,33]
+   ```
+
+   ```python
+   tools = ["搬砖","菜刀","榔头"]
+   weapon = ["AK47","M6"]
+   #tools.extend(weapon) # weapon中的值逐一追加到tools中
+   #print(tools) # ["搬砖","菜刀","榔头","AK47","M6"]
+   
+   weapon.extend(tools)
+   print(tools) # ["搬砖","菜刀","榔头"]
+   print(weapon) # ["AK47","M6","搬砖","菜刀","榔头"]
+   ```
+
+   ```python
+   # 等价于(扩展)
+   weapon = ["AK47","M6"]
+   for item in weapon:
+       print(item)
+   
+   # 输出：
+   #  AK47
+   #  M6
+   tools = ["搬砖","菜刀","榔头"]
+   weapon = ["AK47","M6"]
+   for item in weapon:
+       tools.append(item)  
+   print(tools) # ["搬砖","菜刀","榔头","AK47","M6"]
+   ```
+
+3. 插入，在原列表的指定索引位置插入值
+
+   ```python
+   user_list = ["苍老师","有坂深雪","大桥未久"]
+   user_list.insert(0,"马蓉")
+   user_list.insert(2,"李小璐")
+   print(user_list)
+   ```
+
+   ```python
+   # 案例
+   name_list = []
+   while True:
+       name = input("请输入购买火车票用户姓名（Q/q退出）：")
+       if name.upper() == "Q":
+           break
+       if name.startswith("刁"):
+           name_list.insert(0, name)
+       else:
+           name_list.append(name)
+   print(name_list)
+   ```
+
+4. 在原列表中根据值删除（从左到右找到第一个删除）【慎用，里面没有会报错】
+
+   ```python
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   user_list.remove("Alex")
+   print(user_list)
+   
+   
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   if "Alex" in user_list:
+   	user_list.remove("Alex")
+   print(user_list)
+   
+   
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   while True:
+       if "Alex" in user_list:
+           user_list.remove("Alex")
+   	else:
+           break
+   print(user_list)
+   ```
+
+   ```python
+   # 案例：自动抽奖程序
+   import random
+   
+   data_list = ["iphone12", "二手充气女友", "大保健一次", "泰国5日游", "避孕套"]
+   
+   while data_list:
+       name = input("自动抽奖程序，请输入自己的姓名：")
+   
+       # 随机从data_list抽取一个值出来
+       value = random.choice(data_list) # "二手充气女友"
+       print( "恭喜{}，抽中{}.".format(name, value) )
+       
+       data_list.remove(value) # "二手充气女友"
+   ```
+
+5. 在原列表中根据索引踢出某个元素（根据索引位置删除）
+
+   ```python
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   #               0       1      2      3       4
+   user_list.pop(1)
+   print(user_list) #  ["王宝强","Alex","贾乃亮","Alex"]
+   
+   user_list.pop()
+   print(user_list) # ["王宝强","Alex","贾乃亮"]
+   
+   item = user_list.pop(1)
+   print(item) # "Alex"
+   print(user_list) # ["王宝强","贾乃亮"]
+   ```
+
+   ```python
+   # 案例：排队买火车票
+   
+   # ["alex","李杰","eric","武沛齐","老妖","肝胆"]
+   user_queue = []
+   
+   while True:
+       name = input("北京~上海火车票，购买请输入姓名排队(Q退出)：")
+       if name == "Q":
+           break
+       user_queue.append(name)
+   
+   ticket_count = 3
+   for i in range(ticket_count):
+       username = user_queue.pop(0)
+       message = "恭喜{},购买火车票成功。".format(username)
+       print(message)
+   
+   # user_queue = ["武沛齐","老妖","肝胆"]
+   faild_user = "、".join(user_queue) # "武沛齐、老妖、肝胆"
+   faild_message = "非常抱歉，票已售完，以下几位用户请选择其他出行方式，名单：{}。".format(faild_user)
+   print(faild_message)
+   ```
+
+6. 清空原列表
+
+   ```python
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   user_list.clear()
+   print(user_list) # []
+   ```
+
+7. 根据值获取索引（从左到右找到第一个删除）【慎用，找不到报错】
+
+   ```python
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   #               0       1      2       3      4
+   if "Alex" in user_list:
+   	index = user_list.index("Alex")
+   	print(index) # 2
+   else:
+       print("不存在")
+   ```
+
+8. 列表元素排序
+
+   ```python
+   # 数字排序
+   num_list = [11, 22, 4, 5, 11, 99, 88]
+   print(num_list)
+   num_list.sort()  # 让num_list从小到大排序
+   num_list.sort(reverse=True)  # # 让num_list从大到小排序
+   print(num_list)
+   
+   
+   # 字符串排序
+   user_list = ["王宝强", "Ab陈羽凡", "Alex", "贾乃亮", "贾乃", "1"]
+   #       [29579, 23453, 24378]
+   #       [65, 98, 38472, 32701, 20961]
+   #       [65, 108, 101, 120]
+   #       [49]
+   print(user_list)
+   """
+   sort的排序原理
+       [ "x x x" ," x x x x x " ]
+   """
+   user_list.sort()
+   print(user_list)
+   ```
+
+   注意：排序时内部元素无法进行比较时，程序会报错（尽量数据类型统一）。
+
+9. 反转原列表
+
+   ```python
+   user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]
+   user_list.reverse()
+   
+   print(user_list)
+   ```
+
+### 4.3 公共功能
+
+1. 相加，两个列表相加获取生成一个新的列表。
+
+   ```python
+   data = ["赵四","刘能"] + ["宋晓峰","范德彪"]
+   print(data) # ["赵四","刘能","宋晓峰","范德彪"]
+   
+   v1 = ["赵四","刘能"]
+   v2 = ["宋晓峰","范德彪"]
+   v3 = v1 + v2
+   print(v3) # ["赵四","刘能","宋晓峰","范德彪"]
+   ```
+
+2. 相乘，列表*整型 将列表中的元素再创建N份并生成一个新的列表。
+
+   ```python
+   data = ["赵四","刘能"] * 2
+   print(data) # ["赵四","刘能","赵四","刘能"]
+   
+   v1 = ["赵四","刘能"]
+   v2 = v1 * 2
+   print(v1) # ["赵四","刘能"]
+   print(v2) # ["赵四","刘能","赵四","刘能"]
+   ```
+
+3. 运算符in包含
+   由于列表内部是由多个元素组成，可以通过in来判断元素是否在列表中。
+
+   ```python
+   user_list = ["狗子","二蛋","沙雕","alex"] 
+   result = "alex" in user_list
+   # result = "alex" not in user_list
+   print(result) #  True
+   
+   if "alex" in user_list:
+       print("在，把他删除")
+       user_list.remove("alex")
+   else:
+       print("不在")
+   ```
+
+   ```python
+   user_list = ["狗子","二蛋","沙雕","alex"] 
+   if "alex" in user_list:
+       print("在，把他删除")
+       user_list.remove("alex")
+   else:
+       print("不在")
+   
+   text = "打倒小日本"
+   data = "日" in text
+   ```
+
+   ```python
+   # 案例
+   user_list = ["狗子","二蛋","沙雕","alex"] 
+   if "alex" in user_list:
+       print("在，把他删除")
+       user_list.remove("alex")
+   else:
+       print("不在")
+   ```
+
+   ```python
+   # 案例user_list = ["王宝强","陈羽凡","Alex","贾乃亮","Alex"]if "Alex" in user_list:	index = user_list.index("Alex")	user_list.pop(index)
+   ```
+
+   ```python
+   # 案例：敏感词替换
+   text = input("请输入文本内容：") # 按时打发第三方科技爱普生豆腐啊；了深刻的房价破阿偶打飞机
+   forbidden_list = ["草","欧美","日韩"]
+   for item in forbidden_list:
+       text = text.replace(item,"**")
+   print(text)
+   ```
+
+   注意：**列表检查元素是否存在时，是采用逐一比较的方式，效率会比较低。**
+
+4. 获取长度
+
+   ```python
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四']
+   print( len(user_list) )
+   ```
+
+5. 索引，一个元素的操作
+
+   ```python
+   # 读
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四']
+   print( user_list[0] )
+   print( user_list[2] )
+   print( user_list[3] ) # 报错
+   ```
+
+   ```python
+   # 改
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四']
+   user_list[0] = "武沛齐"
+   print(user_list) # ["武沛齐","刘华强",'尼古拉斯赵四']
+   ```
+
+   ```python
+   # 删
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四']
+   del user_list[1]
+   
+   user_list.remove("刘华强")
+   ele = user_list.pop(1)
+   ```
+
+   注意：超出索引范围会报错。
+   提示：由于字符串是不可变类型，所以他只有索引读的功能，而列表可以进行 读、改、删
+
+6. 切片，多个元素的操作（很少用）
+
+   ```python
+   # 读
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四']
+   
+   print( user_list[0:2] ) # ["范德彪","刘华强"]
+   print( user_list[1:] )
+   print( user_list[:-1] )
+   ```
+
+   ```python
+   # 改
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   user_list[0:2] = [11, 22, 33, 44]
+   print(user_list) # 输出 [11, 22, 33, 44, '尼古拉斯赵四']
+   
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   user_list[2:] = [11, 22, 33, 44]
+   print(user_list) # 输出 ['范德彪', '刘华强', 11, 22, 33, 44]
+   
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   user_list[3:] = [11, 22, 33, 44]
+   print(user_list) # 输出 ['范德彪', '刘华强', '尼古拉斯赵四', 11, 22, 33, 44]
+   
+   
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   user_list[10000:] = [11, 22, 33, 44]
+   print(user_list) # 输出 ['范德彪', '刘华强', '尼古拉斯赵四', 11, 22, 33, 44]
+   
+   
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   user_list[-10000:1] = [11, 22, 33, 44]
+   print(user_list) # 输出 [11, 22, 33, 44, '刘华强', '尼古拉斯赵四']
+   ```
+
+   ```python
+   # 删
+   user_list = ["范德彪", "刘华强", '尼古拉斯赵四']
+   del user_list[1:]
+   print(user_list) # 输出 ['范德彪']
+   ```
+
+7. 步长
+
+   ```python
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四',"宋小宝","刘能"]
+   #              0        1        2          3       4
+   print( user_list[1:4:2] )
+   print( user_list[0::2] )
+   print( user_list[1::2] )
+   print( user_list[4:1:-1] )
+   ```
+
+   ```python
+   # 案例：实现列表的翻转
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四',"宋小宝","刘能"]
+   new_data = user_list[::-1]
+   print(new_data)
+   
+   
+   data_list = ["范德彪","刘华强",'尼古拉斯赵四',"宋小宝","刘能"]
+   data_list.reverse()
+   print(data_list)
+   
+   # 给你一个字符串请实现字符串的翻转？
+   name = "武沛齐"
+   name[::-1]
+   ```
+
+8. for循环
+
+   ```python
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四',"宋小宝","刘能"]
+   for item in user_list:
+   	print(item)
+   ```
+
+   ```python
+   user_list = ["范德彪","刘华强",'尼古拉斯赵四',"宋小宝","刘能"]
+   
+   for index in range( len(user_list) ):
+       item = user_index[index]
+       print(item)
+   ```
+
+   切记，循环的过程中对数据进行删除会踩坑【面试题】。
+
+   ```python
+   # 错误方式， 有坑，结果不是你想要的。
+   
+   user_list = ["刘的话", "范德彪", "刘华强", '刘尼古拉斯赵四', "宋小宝", "刘能"]
+   for item in user_list:
+       if item.startswith("刘"):
+           user_list.remove(item)
+           
+   print(user_list)
+   
+   
+   ```
+
+   ```python
+   # 正确方式，倒着删除。
+   user_list = ["刘的话", "范德彪", "刘华强", '刘尼古拉斯赵四', "宋小宝", "刘能"]
+   for index in range(len(user_list) - 1, -1, -1):
+       item = user_list[index]
+       if item.startswith("刘"):
+           user_list.remove(item)
+   print(user_list)
+   ```
+
+### 4.4 转换
+
+- int、bool无法转换成列表
+
+- str
+
+  ```python
+  name = "武沛齐"
+  
+  data = list(name)  # ["武","沛","齐"]
+  print(data)
+  ```
+
+- 超前
+
+  ```python
+  v1 = (11,22,33,44) # 元组
+  vv1 = list(v1)     # 列表 [11,22,33,44]
+  
+  v2 = {"alex","eric","dsb"} # 集合
+  vv2 = list(v2) # 列表 ["alex","eric","dsb"]
+  ```
+
+  
+
+### 4.5. 其他
+
+#### 4.5.1 嵌套
+
+列表属于容器，内部可以存放各种数据，所以他也支持列表的嵌套，如：
+
+```python
+data = [ "谢广坤",["海燕","赵本山"],True,[11,22,[999,123],33,44],"宋小宝" ]
+```
+
+对于嵌套的值，可以根据之前学习的索引知识点来进行学习，例如：
+
+```python
+data = [ "谢广坤",["海燕","赵本山"],True,[11,22,33,44],"宋小宝" ]
+
+print( data[0] ) # "谢广坤"
+print( data[1] ) # ["海燕","赵本山"]
+print( data[0][2] ) # "坤"
+print( data[1][-1] ) # "赵本山"
+
+data.append(666)
+print(data) # [ "谢广坤",["海燕","赵本山"],True,[11,22,33,44],"宋小宝",666]
+
+data[1].append("谢大脚")
+print(data) # [ "谢广坤",["海燕","赵本山","谢大脚"],True,[11,22,33,44],"宋小宝",666 ]
+
+
+del data[-2]
+print(data) # [ "谢广坤",["海燕","赵本山","谢大脚"],True,[11,22,33,44],666 ]
+
+
+data[-2][1] = "alex"
+print(data) # [ "谢广坤",["海燕","赵本山","谢大脚"],True,[11,"alex",33,44],666 ]
+
+
+data[1][0:2] = [999,666]
+print(data) # [ "谢广坤",[999,666,"谢大脚"],True,[11,"alex",33,44],666 ]
+```
+
+```python
+# 创建用户列表
+#    用户列表应该长： [ ["alex","123"],["eric","666"] ]
+
+# user_list = [["alex","123"],["eric","666"],]
+# user_list.append(["alex","123"])
+# user_list.append(["eric","666"])
+
+
+user_list = []
+while True:
+    user = input("请输入用户名：")
+    pwd = input("请输入密码：")
+
+    data = []
+    data.append(user)
+    data.append(pwd)
+    
+    user_list.append(data)
+```
+
+```python
+user_list = []
+while True:
+    user = input("请输入用户名(Q退出)：")
+    if user == "Q":
+        break
+    pwd = input("请输入密码：")
+    data = [user,pwd]
+    user_list.append(data)
+
+print(user_list)
+```
+
+
