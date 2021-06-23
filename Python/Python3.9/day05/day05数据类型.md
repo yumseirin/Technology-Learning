@@ -1965,6 +1965,7 @@ data_list = [
     [11, 22, 33, 22],
     {11, 22, (True, ["中国", "北京"], "沙河"), 33}
 ]
+#集合中的所有元素，包括元素的子元素都要可哈希才行
 ```
 
 注意：由于True和False本质上存储的是 1 和 0 ，而集合又不允许重复，所以在整数 0、1和False、True出现在集合中会有如下现象：
@@ -1982,4 +1983,733 @@ print(v3)  # {0}
 v4 = {False, 0}
 print(v4)  # {False}
 ```
+
+
+
+## 强插：None类型
+
+Python的数据类型中有一个特殊的值None，意味着这个值啥都不是 或 表示空。 相当于其他语言中 `null`作用一样。
+
+在一定程度上可以帮助我们去节省内存。例如：
+
+```python
+v1 = None
+v2 = None
+..
+v1 = [11,22,33,44]
+v2 = [111,22,43]
+```
+
+```python
+v3 = []
+v4 = []
+...
+v3 = [11,22,33,44]
+v4 = [111,22,43]
+```
+
+注意：暂不要考虑Python内部的缓存和驻留机制。
+
+
+
+目前所有转换为布尔值为False的值有：
+
+```python
+0
+""
+[] or list()
+() or tuple()
+set()
+None
+```
+
+```python
+if None:
+    pass
+```
+
+
+
+## 7.字典（dict)
+
+字典是 **无序**、**键不重复** 且 元素只能是**键值对**的**可变的** 个 **容器**。
+
+```python
+data = { "k1":1,  "k2":2 }
+```
+
+- 容器
+
+- 元素必须键值对
+
+- 键不重复，重复则会被覆盖
+
+  ```python
+  data = { "k1":1, "k1":2 }
+  print(data) # {"k1":2}
+  ```
+
+- 无序（在Python3.6+字典就是有序了，之前的字典都是无序。）
+
+  ```python
+  data = { "k1":1,  "k2":2 }
+  print(data)
+  ```
+
+  
+
+### 7.1 定义
+
+```python
+v1 = {}
+v2 = dict()
+```
+
+```python
+data = { 
+    "k1":1, 
+    "k2":2 
+}
+```
+
+```python
+info = { 
+    "age":12, 
+    "status":True,  
+    "name":"wupeiqi",   
+    "hobby":['篮球','足球']  
+}
+```
+
+字典中对键值得要求：
+
+- 键：必须可哈希。 目前为止学到的可哈希的类型：int/bool/str/tuple；不可哈希的类型：list/set/dict。（集合）
+- 值：任意类型。
+
+```python
+data_dict = {
+	"武沛齐":29,
+	 True:5,
+	123:5,
+    (11,22,33):["alex","eric"]
+}
+```
+
+```python
+# 不合法
+v1 = {
+    [1, 2, 3]: '周杰伦',
+    "age" : 18
+} 
+v2 = {
+    {1,2,3}: "哈哈哈",
+    'name':"alex"
+} 
+
+v3 = {
+    {"k1":123,"k2":456}: '呵呵呵',
+    "age":999
+}
+```
+
+```python
+data_dict = {
+    1: 29,
+    True: 5
+}
+print(data_dict) # {1: 5}
+```
+
+
+
+一般在什么情况下会用到字典呢？
+
+当我们想要表示一组固定信息时，用字典可以更加的直观，例如：
+
+```python
+# 用户列表
+user_list = [ ("alex","123"), ("admin","666") ]
+...
+```
+
+```python
+# 用户列表
+user_list = [ {"name":"alex","pwd":"123"}, {"name":"eric","pwd":"123"} ]
+```
+
+
+
+### 7.2 独有功能
+
+1. 获取值
+
+   ```python
+   info = { 
+       "age":12, 
+       "status":True, 
+       "name":"武沛齐",
+       "data":None
+   }
+   
+   data1 = info.get("name")
+   print(data1) # 输出：武沛齐
+   
+   data2 = info.get("age")
+   print(data2) # 输出：12
+   
+   data = info.get("email") # 键不存在，默认返回 None
+   """
+   if data == None:
+       print("此键不存在")
+   else:
+       print(data)
+   
+   if data:
+       print(data)
+   else:
+       print("键不存在")
+   """
+   
+   """
+   # 字典的键中是否存在 email
+   if "email" in info:
+       data = info.get("email")
+       print(data)
+   else:
+   	print("不存在")
+   """
+   
+   data = info.get("hobby",123)
+   print(data) # 输出：123
+   ```
+
+   ```python
+   # 案例：
+   user_list = {
+       "wupeiqi": "123",
+       "alex": "uk87",
+   }
+   
+   username = input("请输入用户名：")
+   password = input("请输入密码：")
+   # None，用户名不存在
+   # 密码，接下来比较密码
+   pwd = user_list.get(username)
+   
+   if pwd == None:
+       print("用户名不存在")
+   else:
+       if password == pwd:
+           print("登录成功")
+   	else:
+           print("密码错误")
+   ```
+
+   ```python
+   # 案例：
+   user_list = {
+       "wupeiqi": "123",
+       "alex": "uk87",
+   }
+   
+   username = input("请输入用户名：")
+   password = input("请输入密码：")
+   # None，用户名不存在
+   # 密码，接下来比较密码
+   pwd = user_list.get(username)
+   
+   if pwd:
+       if password == pwd:
+           print("登录成功")
+   	else:
+           print("密码错误")
+   else:
+       print("用户名不存在")
+   ```
+
+   ```python
+   # 案例：
+   user_list = {
+       "wupeiqi": "123",
+       "alex": "uk87",
+   }
+   
+   username = input("请输入用户名：")
+   password = input("请输入密码：")
+   # None，用户名不存在
+   # 密码，接下来比较密码
+   pwd = user_list.get(username)
+   
+   if not pwd:
+       print("用户名不存在")
+   else:
+       if password == pwd:
+           print("登录成功")
+   	else:
+           print("密码错误")
+           
+   # 写代码的准则：简单的逻辑处理放在前面；复杂的逻辑放在后面。
+   ```
+
+2. 所有的键
+
+   ```python
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   data = info.keys()
+   print(data) # 输出：dict_keys(['age', 'status', 'name', 'email'])    py2 -> ['age', 'status', 'name', 'email']
+   
+   result = list(data)
+   print(result) # ['age', 'status', 'name', 'email']
+   ```
+
+   注意：在Python2中 字典.keys()直接获取到的是列表，而Python3中返回的是`高仿列表`，这个高仿的列表可以被循环显示。
+
+   ```python
+   # 循环
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   for ele in info.keys():
+       print(ele)
+   ```
+
+   ```python
+   # 是否存在
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   # info.keys() # dict_keys(['age', 'status', 'name', 'email'])
+   if "age" in info.keys():
+       print("age是字典的键")
+   else:
+       print("age不是")
+   ```
+
+3. 所有的值
+
+   ```python
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   data = info.values()
+   
+   print(data) # 输出：dict_values([12, True, 'wupeiqi', 'xx@live.com'])
+   ```
+
+   注意：在Python2中 字典.values()直接获取到的是列表，而Python3中返回的是高仿列表，这个高仿的列表可以被循环显示。
+
+   ```python
+   # 循环
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   for val in info.values():
+       print(val) 
+   ```
+
+   ```python
+   # 是否存在
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   if 12 in info.values():
+       print("12是字典的值")
+   else:
+       print("12不是")
+   ```
+
+   
+
+4. 所有的键值
+
+   ```python
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   data = info.items()
+   
+   print(data) # 输出 dict_items([ ('age', 12),  ('status', True),  ('name', 'wupeiqi'),  ('email', 'xx@live.com')  ])
+   ```
+
+   ```python
+   for item in info.items():
+       print(item[0],item[1]) # item是一个元组 (键，值)
+   ```
+
+   ```python
+   for key,value in info.items():
+       print(key,value) # key代表键，value代表值，将兼职从元组中直接拆分出来了。
+   ```
+
+   ```python
+   info = {"age":12, "status":True, "name":"wupeiqi","email":"xx@live.com"}
+   data = info.items()
+   
+   if ('age', 12) in data:
+       print("在")
+   else:
+       print("不在")
+   ```
+
+5. 设置值
+
+   ```python
+   data = {
+       "name": "武沛齐",
+       "email": 'xxx@live.com'
+   }
+   data.setdefault("age", 18)
+   print(data)  # {'name': '武沛齐', 'email': 'xxx@live.com', 'age': 18}
+   
+   data.setdefault("name", "alex")
+   print(data)  # {'name': '武沛齐', 'email': 'xxx@live.com', 'age': 18}
+   ```
+
+6. 更新字典键值对
+
+   ```python
+   info = {"age":12, "status":True}
+   info.update( {"age":14,"name":"武沛齐"} )   # info中没有的键直接添加；有的键则更新值
+   print(info) # 输出：{"age":14, "status":True,"name":"武沛齐"}
+   ```
+
+7. 移除指定键值对
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   
+   data = info.pop("age")
+   
+   print(info) # {"status":True,"name":"武沛齐"}
+   print(data) # 12
+   ```
+
+8. 按照顺序移除（后进先出）
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   data = info.popitem() # ("name","武沛齐" )
+   
+   print(info) # {"age":12, "status":True}
+   print(data) # ("name","武沛齐")
+   ```
+
+   - py3.6后，popitem移除最后的值。
+   - py3.6之前，popitem随机删除。
+
+### 7.3 公共功能
+
+1. 求`并集`（Python3.9新加入）
+
+   ```python
+   v1 = {"k1": 1, "k2": 2}
+   v2 = {"k2": 22, "k3": 33}
+   
+   v3 = v1 | v2
+   print(v3) # {'k1': 1, 'k2': 22, 'k3': 33}
+   ```
+
+2. 长度
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   data = len(info)
+   print(data) # 输出：3
+   ```
+
+3. 是否包含
+
+   ```python
+   info = { "age":12,  "status":True,"name":"武沛齐" }
+   v1 = "age" in info
+   print(v1)
+   
+   v2 = "age" in info.keys()
+   print(v2)
+   
+   if "age" in info:
+       pass
+   else:
+       pass
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   v1 = "武佩奇" in info.values()
+   print(v1)
+   ```
+
+   ```python
+   info = {"age": 12, "status": True, "name": "武沛齐"}
+   # 输出info.items()获取到的 dict_items([ ('age', 12),  ('status', True),  ('name', 'wupeiqi'),  ('email', 'xx@live.com')  ])
+   v1 = ("age", 12) in info.items()
+   print(v1)
+   ```
+
+4. 索引（键）
+   字典不同于元组和列表，字典的索引是`键`，而列表和元组则是 `0、1、2等数值` 。
+
+   ```python
+   info = { "age":12,  "status":True, "name":"武沛齐"}
+   
+   print( info["age"] )  	    # 输出：12
+   print( info["name"] )		# 输出：武沛齐
+   print( info["status"] )	    # 输出：True
+   print( info["xxxx"] )   	# 报错，通过键为索引去获取之后时，键不存在会报错（以后项目开发时建议使用get方法根据键去获取值）
+   
+   value = info.get("xxxxx") # None
+   print(value)
+   ```
+
+5. 根据键 修改值 和 添加值 和 删除键值对
+   上述示例通过键可以找到字典中的值，通过键也可以对字典进行添加和更新操作
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   
+   info["gender"] = "男"
+   
+   print(info) # 输出： {"age":12, "status":True,"name":"武沛齐","gender":"男"}
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   
+   info["age"] = "18" 
+   
+   print(info) # 输出： {"age":"18", "status":True,"name":"武沛齐"}
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   del info["age"]  # 删除info字典中键为age的那个键值对（键不存在则报错）
+   
+   print(info) # 输出： {"status":True,"name":"武沛齐"}
+   ```
+
+   ```python
+   info = {"age": 12, "status": True, "name": "武沛齐"}
+   if "agea" in info:
+   
+       # del info["age"]
+       data = info.pop("age")
+       print(info)
+       print(data)
+   else:
+       print("键不存在")
+   ```
+
+6. for循环
+   由于字典也属于是容器，内部可以包含多个键值对，可以通过循环对其中的：键、值、键值进行循环；
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   for item in info:
+   	print(item)  # 所有键
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   for item in info.key():
+   	print(item)
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   for item in info.values():
+   	print(item)
+   ```
+
+   ```python
+   info = {"age":12, "status":True,"name":"武沛齐"}
+   for key,value in info.items():
+   	print(key,value)
+   ```
+
+
+
+### 7.4 转换
+
+想要转换为字典.
+
+```python
+v = dict( [ ("k1", "v1"), ["k2", "v2"] ] )
+
+print(v) # { "k1":"v1", "k2":"v2" }
+```
+
+```python
+info = { "age":12, "status":True, "name":"武沛齐" }
+
+v1 = list(info)        # ["age","status","name"]
+
+v2 = list(info.keys()) # ["age","status","name"]
+
+v3 = list(info.values()) # [12,True,"武沛齐"]
+
+v4 = list(info.items()) # [ ("age",12), ("status",True), ("name","武沛齐") ]
+```
+
+### 7.5 其他
+
+#### 7.5.1 存储原理
+
+![image-20201121131221807](day05数据类型.assets/image-20201121131221807.png)
+
+
+
+#### 7.5.2 速度快
+
+```python
+info = {
+    "alex":["肝胆","铁锤"], 
+	"老男孩":["二蛋","缺货"]
+}
+for "alex" in info:
+    print("在"）
+```
+
+```python
+info = {
+    "alex":["肝胆","铁锤"], 
+	"老男孩":["二蛋","缺货"]
+}
+v1 = info["alex"]
+v2 = info.get("alex")
+```
+
+
+
+#### 7.5.3 嵌套
+
+我们已学了很多数据类型，在涉及多种数据类型之间的嵌套时，需注意一下几点：
+
+- 字典的键必须可哈希（list/set/dict不可哈希）。
+
+  ```python
+  info = {
+      (11,22):123
+  }
+  
+  # 错误
+  info = {
+      (11,[11,22,],22):"alex"
+  }
+  ```
+
+- 字典的值可以是任意类型。
+
+  ```python
+  info = {
+      "k1":{12,3,5},
+  	"k2":{"xx":"x1"}
+  }
+  ```
+
+- 字典的键和集合的元素在遇到  布尔值 和 1、0 时，需注意重复的情况。
+
+- 元组的元素不可以被替换。
+
+```python
+dic = {
+	'name':'汪峰',
+	'age':48,
+	'wife':[ {'name':'国际章','age':38},{'name':'李杰','age':48} ],
+	'children':['第一个娃','第二个娃']
+}
+"""
+1. 获取汪峰的妻子名字
+	d1 = dic['wife'][0]['name']
+	print(d1)
+2. 获取汪峰的孩子们
+	d2 = dic['children']
+	print(d2)
+3. 获取汪峰的第一个孩子
+	d3 = dic['children'][0]
+	print(d3)
+4. 汪峰的媳妇姓名变更为 章子怡
+	dic['wife'][0]['name] = "章子怡"
+	print(dic)
+5. 汪峰再娶一任妻子
+	dic['wife'].append( {"name":"铁锤","age":19} )
+	print(dic)
+	
+6. 给汪峰添加一个爱好：吹牛逼
+	dic['hobby'] = "吹牛逼"
+	print(dic)
+7. 删除汪峰的年龄
+	del dic['age']
+	或
+	dic.pop('age')
+	print(dic)
+"""
+```
+
+
+
+## 8.浮点型（float）
+
+浮点型，一般在开发中用于表示小数。
+
+```python
+v1 = 3.14
+v2 = 9.89
+```
+
+关于浮点型的其他知识点如下：
+
+- 在类型转换时需要，在浮点型转换为整型时，会将小数部分去掉。
+
+  ```python
+  v1 = 3.14 
+  data = int(v1)
+  print(data) # 3
+  ```
+
+- 想要保留小数点后N位
+
+  ```python
+  v1 = 3.1415926
+  result = round(v1,3)
+  print(result) # 3.142
+  ```
+
+- 浮点型的坑（所有语言中）
+  <img src="day05数据类型.assets/image-20201121190846593.png" alt="image-20201121190846593" style="zoom: 33%;" />
+
+  底层原理视频：https://www.bilibili.com/video/BV1354y1B7o1/
+
+
+  在项目中如果遇到精确的小数计算应该怎么办？
+
+  ```python
+import decimal
+
+v1 = decimal.Decimal("0.1")
+v2 = decimal.Decimal("0.2")
+v3 = v1 + v2
+print(v3) # 0.3
+  ```
+
+  
+
+## 总结
+
+1. 集合，是 无序、不重复、元素必须可哈希、可变的一个容器（子孙元素都必须是可哈希）。
+
+2. 集合的查找速度比较快（底层是基于哈希进行存储）
+
+3. 集合可以具有 交并差 的功能。
+
+4. 字典是 无序、键不重复 且 元素只能是键值对的可变的一个容器（键子孙元素都必须是可哈希）。
+
+5. py3.6+之后字典就变为有序了。
+
+6. py3.9 新增了一个 `{} | {} `运算。
+
+7. 字典的常见功能。
+
+8. 在python2和python3中，字典的 keys() 、values()、items() 三个功能获取的数据类型不一样。
+
+9. None是代表内存中的一个空值。
+
+   ```python
+   0
+   ""
+   [] or list()
+   () or tuple()
+   set()
+   None
+   {} or dict()
+   ```
+
+10. 浮点型用于表示小数，但是由于其内部存储原理可能会引发数据存储不够精准。
 
