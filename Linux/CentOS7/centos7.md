@@ -306,6 +306,18 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
   - find 要查找的范围 -name 名字
   - find /etc -name profile
 
+### 3.文件大小
+
+- 查看分区信息
+  - df -h
+- 指定文件目录大小
+  - du -h --max-depth=1 a/
+  - 查看这个目录下所有文件所占大小
+  - --max-depth=1 是该命令查看的深度，只看1层
+- swap
+  - 一个特殊分区，以硬盘代替内存
+  - 当内存使用满的时候可以将一部分数据写出到swap分区
+
 ## 五、VI和VIM编辑器
 
 ### 1.打开文件
@@ -395,3 +407,97 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
     - 3,8s/abc/xyz/g
   - 替换全文
     - g/abc/s//xyz/g
+
+## 六、计算机间的数据传输
+
+### 1.Windows--Linux
+
+- lrzsz
+  - 需要手动安装
+    - yum instal lrzsz -y
+  - rz
+    - received（接收）
+    - 将文件从Windows上传到Linux
+  - sz 文件
+    - send（发送）
+    - 将文件从Linux传输到Windows
+  - 不论是rz还是sz，动作都是在服务器上发起的
+- xftp
+  - 较为通用的文件传输方式
+
+### 2.Linux--Linux
+
+- scp 源数据地址(source) 目标数据地址(target)
+- scp abc.md root@192.168.11.101:/opt
+- scp root@192.168.11.101:/opt/abc.md ./
+- scp -r a root@192.168.11.101:/opt
+  - 如果拷贝的文件夹，需要加-r迭代
+
+## 七、文件压缩
+
+### 1.tar
+
+- 主要是针对文件是  abc.tar.gz
+- 解压缩
+  - tar -zx(解压)v(过程)f(文件) abc.tar.gz
+- 压缩
+  - tar -zc(压缩)f(文件) tomcat.tar.gz(压缩后的名字) apache-tomcat-7.0.61(源文件)
+  - tar -zxf tomcat.tar.gz -C /opt/
+    - -C指定解压缩的文件目录
+
+### 2.zip和unzip
+
+- 安装
+  - yum install zip unzip -y
+- 压缩
+  - zip -r tomcat.zip apache-tomcat-7.0.61
+- 解压缩
+  - unzip tomcat.zip
+
+## 八、Linux的网络信息
+
+### 1.主机名称
+
+- 临时修改
+  - hostname school
+- 长久修改
+  - vi /etc/hosthome
+
+### 2.DNS解析
+
+- 域名解析服务
+- 可以将域名转换为IP地址
+- DNS域名劫持
+  - windows --> C:\Windows\System32\drivers\etc\hosts
+  - 123.45.123.45 www.baidu.com
+- 修改主机域名
+  - vi /etc/hosts
+  - 将来需要把所有的虚拟机都配置hosts文件
+  - 192.168.11.101 centos_test2
+  - 192.168.11.102 centos_test3
+
+### 3.网络相关命令
+
+- ifconfig
+  - 查看当前网卡的配置信息
+  - 这个命令属于net-tools中的一个命令，但是CentOS7中minimal版并没有集成这个包
+  - 所以需要自己手动安装yum install net-tools -y
+  - 如果没有ifconfig，可以使用ip addr临时代替
+- netstat
+  - 查看当前网络的状态信息
+  - 一个机器默认有65536个端口号[0,65535]
+  - 这是一个逻辑的概念，将来我们需要使用程序监听指定的端口，等待别人的访问
+  - netstat -anp 看端口的监控情况，端口和端口的监控程序
+  - netstat -r 核心路由表  == route
+- ping
+  - 查看与目标IP地址是否能够连通
+- telnet
+  - 查看与目标IP的指定端口是否能够连通
+  - yum install telnet -y
+  - telnet 192.168.11.101 22
+
+- curl
+  - restful 所有的资源在网络上都有唯一的定位
+  - 那么就可以通过这个唯一定位标识指定的资源
+  - http://localhost:8080/abc/user.cation/123
+  - curl -X GET http://www.baidu.com
