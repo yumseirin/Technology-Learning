@@ -68,7 +68,7 @@ UUID
 关闭防火墙：
 
 - systemctl stop firewalld（本次服务内关闭防火墙，立即关闭仅本次生效）
-- systemctl disable fireealld（下次重启后禁用防火墙服务，长期生效）
+- systemctl disable firewalld（下次重启后禁用防火墙服务，长期生效）
 
 ### 3、软件安装限制
 
@@ -199,7 +199,66 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
 
 ## 四、Linux的命令
 
-### 1.文件的操作命令
+### 1.Linux命令的首要须知
+
+- Linux命令与参数之间必须用空格隔开
+- Linux命令是区分大小写的
+- 如果输入了错误的命令
+  - -bash: abc: command not found
+  - 命令敲错了
+  - 命令未安装
+- type 命令
+  - type工具用于显示命令的类型信息。它将展示在命令行上输入给定的命令将如何解释。
+  - ls is aliased to `ls --color=tty'
+  - cd is a shell builtin
+  - vim is hashed (/usr/bin/vim)
+  - sleep is /usr/bin/sleep
+- 命令的帮助文档
+  - help
+    - 内置命令的帮助文档
+  - man
+    - 外部命令的帮助文档
+    - 如果是minimal版的系统，very basic没有man包
+    - 需要手动安装man
+      - yum install -y man man-pages
+
+### 2.常用的命令
+
+- whereis 查询命令文件的位置
+- file查看文件的类型
+- who查看当前在线的用户
+- whoami 我是谁
+- pwd 我在哪儿
+- uname -a 查看内核信息
+- echo 类似于 sout syso ，打印语句
+- clear 清屏
+- history历史
+
+### 3.特殊字符
+
+- .  点：
+  - 如果文件的开始是.说明当前文件是一个隐藏文件
+  - .指向当前目录
+  - ..指向当前目录的上级目录
+- $
+  - 说明这是一个变量
+    - $PATH Linux的环境变量
+- * 星号
+    * 通配符
+- ~
+  - 当前用户的家目录
+  - 每个用户的家目录是不同的
+  - root用户家目录在系统根目录下
+  - 其他用户的家目录在/home/用户名
+- 空格
+  - Linux的命令与参数用空格隔开
+- /
+  - 整个Linux的文件根目录
+- 命令的参数
+  - 如果是单词 一般加--
+  - 如果是字母或者缩写一般加-
+
+### 4.文件的操作命令
 
 - cd
   - 改变当前工作目录
@@ -473,8 +532,8 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
 - 修改主机域名
   - vi /etc/hosts
   - 将来需要把所有的虚拟机都配置hosts文件
-  - 192.168.11.101 centos_test2
-  - 192.168.11.102 centos_test3
+  - 192.168.11.101 centos7_test2
+  - 192.168.11.102 centos7_test3
 
 ### 3.网络相关命令
 
@@ -501,3 +560,83 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
   - 那么就可以通过这个唯一定位标识指定的资源
   - http://localhost:8080/abc/user.cation/123
   - curl -X GET http://www.baidu.com
+
+### 4.加密算法
+
+#### 4.1不可逆加密算法
+
+- 可以通过数据计算加密后的结果，但是通过结果无法计算出加密数据
+- 应用场景
+  - Hash算法常用在不可还原的密码存储、信息完整性校验
+  - 文档、音视频文件、软件安装包等用新老摘要对比是否一样（接收到的文件是否被修改）
+  - 用户名或者密码加密后数据库存储（数据库大多数不会存储关键信息的明文，就像很多登录功能的忘记密码不能找回，只能重置）
+
+#### 4.2对称加密算法
+
+![image-20210914201248391](centos7.assets/image-20210914201248391-16316215697371.png)
+
+- Symmetric Key Encryption
+- 代表性算法叫做DES , 3DES , Blowfish , IDEA , RC4 , RC5 , RC6 和 AES
+- 特点
+  - 加密和解密使用相同的密钥
+- 优点
+  - 生成密钥的算法公开，计算量小，加密速度快，加密效率高，密钥较短
+- 缺点
+  - 双方共同的密钥，有一方密钥被窃取，双方都影响
+  - 如果为每个顾客都生成不同密钥，则密钥数量巨大，密钥管理有压力
+- 应用场景
+  - 登录信息用户名和密码加密，传输加密，指令加密
+
+#### 4.3非对称加密算法
+
+![image-20210914210155828](centos7.assets/image-20210914210155828.png)
+
+- Asymmetric Key Encryption
+- 非对称加密算法需要一对密钥（两个密钥）：
+  - 公开密钥（publickey）和私有密钥（privatekey）（简称公钥、私钥）。
+  - 公开密钥与私有密钥生成时是一对
+  - 用公钥加密只能是对应的私钥解密，同理用私钥加密只能用对应的公钥解密。
+- 代表性算法叫做RSA、ECC、Diffie-Hellman、EI Gamal、DSA（数字签名用）
+- 优点：
+  - 安全性高（几乎很难破解）
+- 缺点：
+  - 加解密相对速度慢、密钥长、计算量大、效率低
+- 应用场景
+  - HTTPS（ssl）证书的制作，CRS请求证书、金融通信加密、蓝牙等硬件信息加密配对传输、关键的登录信息验证。
+- http://tool.chacuo.net/cryptrsaprikey
+
+### 5.主机间的相互免密钥
+
+- 可以通过ssh命令免密钥连接到其他主机
+- 如果是第一次建立连接，需要输入yes
+  - 在~/.ssh/known_hosts文件记录了以前访问地址（ip hostname）的信息
+  - 在访问地址的时候如果没有收录到known_hosts文件中，就需要输入yes
+  - 如果以前收录到known_hosts中，直接输入密码即可
+- 需要输入密码
+  - 生成秘钥
+    - ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+  - 如果想免密钥登录谁，只需要把自己的公钥传递给对方主机即可
+  - 这个密钥放在 ~/.ssh/authorized_keys
+    - ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.11.101
+- 相互免密钥工作流程
+
+### 6.主机名与Host校验
+
+- 错误原因
+
+- Cannot determine realm for numeric host
+
+- 解决方案1---本次
+
+  - ssh -v -o GSSAPIAuthentication=no root@192.168.11.101
+
+- 解决方案2--所有
+
+  - 修改/etc/ssh/ssh_config文件的配置，以后则不会在出现此问题
+
+  - 最后面添加：
+
+  - StrictHostKeyChecking no
+
+    UserKnownHostsFile /dev/null
+
