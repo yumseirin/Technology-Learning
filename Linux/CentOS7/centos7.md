@@ -328,7 +328,7 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
     - 如果你害怕一个文件被别人误删，你可以使用硬链接保护这个文件
   - 软硬链接在链接文件的时候，推荐使用文件的绝对路径，否则有可能会出现问题
 
-### 2.文件的读取命令
+### 5.文件的读取命令
 
 - cat
   - 将整个文档加载到内存中，并进行一次性显示
@@ -365,7 +365,7 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
   - find 要查找的范围 -name 名字
   - find /etc -name profile
 
-### 3.文件大小
+### 6.文件大小
 
 - 查看分区信息
   - df -h
@@ -640,3 +640,216 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
 
     UserKnownHostsFile /dev/null
 
+## 九、日期与时间
+
+### 1.时间命令
+
+- date
+  - 查看当前系统时间
+- cal 查看日历
+  - cal 2020
+- 修改时间
+  - date -s 10:10:10
+  - date -s 2020-10-10
+  - date -s '2020-10-10 10:10:10'
+
+### 2.日期自动同步
+
+- 自动同步时间
+  - yum install ntp -y
+  - ntpdate cn.ntp.org.cn
+
+### 3.命令执行时间统计
+
+```shell
+#！/bin/bash
+start=$(date +%s)
+nmap man.linuxde.net &> /dev/null
+
+end=$(date +%s)
+difference=$((end - start))
+echo $difference seconds.
+```
+
+## 十、用户-组-权限
+
+### 1.用户
+
+- 新增用户
+  - useradd boss
+  - 会创建同名的组和家目录
+- 设置密码
+  - passwd boss
+- 删除用户
+  - userdel -r boss
+  - 级联删除家目录和组
+- 修改用户信息
+  - usermod -l aoss（新名） boss (旧名)
+    - 家目录和组名称是不会被修改的
+  - usermod -L boss 锁定用户名
+  - usermod -U boss解锁用户名
+- 常用文件
+  - cat /etc/shadow
+    - 用户名和密码
+  - cat /etc/passwd
+    - 用户名，编号，组编号，家目录，命令，目录
+    - 6.5系统0-499普通从500+开始
+    - 7系统0-999 普通从1000+开始
+- 切换账户
+  - su boss
+
+### 2.组
+
+- 创建组
+  - groupadd leader
+- 删除组
+  - groupdel leader
+- 修改组名字
+  - groupmod -n teacher leader
+- 查看用户对应的组
+  - groups
+    - 查看当前用户的组
+  - groups boss
+    - boss ：boss 可以查看该用户所属的组
+    - 当我们创建用户的时候，会默认创建一个同名的主组
+- 修改用户的组
+  - usermod -g leader boss（主组）
+  - usermod -G teacher boss（附属组，没有就添加，有就替换）
+- /etc/group中是所有的用户组
+
+### 3.权限
+
+![image-20210915210944548](centos7.assets/image-20210915210944548.png)
+
+- 查看文件的权限
+  - drw-r-xr-x 9 n1 m1 4096 Nov 13 00:03 apache-tomcat-7.0.1
+  - 三组权限，每组3个字母
+    - r：读取权限
+    - w：写入权限
+    - x：执行权限
+    - -：没有权限
+  - root：所属用户（属主）
+  - root：所属的组（属组）
+- 权限的UGO模型
+  - 三组权限
+  - 属主的权限：属组的权限：其他的权限
+  - 修改文件的权限，可以从rwx和ugo两个方面进行修改
+- 修改文件的权限
+  - 修改文件所属
+    - chown n1 /var/abc1 改主
+    - chown n1:m1 /var/abc2 改主和组
+    - 修改文件夹时，让子目录迭代修改
+      - chown -R n1:m1 school
+    - chgrp m2 abc3
+      - 当用户的组被修改之后，需要重新登录才能获取新组的权限
+  - 修改文件的rwx
+    - chmod o+w abc4
+    - chmod ug+rw abc4
+    - chmod ugo-rw abc4
+    - （权限rwx分别对应数字421 5=4+0+1 r-x）
+      - chmod 664 abc4 -->（rw-rw-r--）
+
+![image-20210915214248543](centos7.assets/image-20210915214248543.png)
+
+### 4.权限赋予
+
+- 可以将管理用的权限分配给普通用户
+- 文件位置在 vim /etc/sudoers
+- 但是修改这个文件需要使用命令
+  - visudo
+  - 修改Line 99
+  - n1 ALL=(root) /sbin/*  （n1是用户名）
+  - n1 ALL=(root) /sbin/useradd  （给n1添加用户的命令）
+  - n1 ALL=(root) /sbin/chkconfig
+- 如何使用
+  - su n1
+  - sudo chkconfig iptables off
+
+## 十一、管道与重定向
+
+### 1.管道
+
+- | 将前面命令的结果作为参数传递给后面的命令
+- grep
+  - 强大的文本搜索工具
+  - cat profile | grep if
+  - ls / | grep ^t
+
+### 2.重定向
+
+- 改变数据输出的位置，方向
+- 0 in    1 out     2 err
+  - ls / 1> abc 标准输出
+  - ls / > abc 标准输出
+  - ls abcd 2> 错误输出
+  - 1> 重定向正确的信息
+  - 2>重定向错误的信息
+  - 默认重定向正确的信息
+- \> 替换   >> 追加
+  - ls / 1>> abc
+  - ls / 1> abc
+- 结合使用
+  - ls /etc/abcd > abc 2>&1
+  - ls /etc/abcd >> abc 2>&1
+- 信息黑洞
+  - ls /etc/abcd >> /dev/null 2>&1
+
+## 十二、Linux的系统进程
+
+### 1.进程信息
+
+- echo $$ 返回登录shell的PID
+
+- ps -ef
+  - UID   PID  PPID   C   STIME   TTY     TIME  CMD
+  - UID所属用户
+  - PID当前进程编号
+  - PPID当前进程编号的父进程编号
+- ps -ef | grep redis  
+  - 以前边命令获得的结果为参数进行模糊查询搜索这个字符串
+- ps -aux
+  - 所有信息
+- ps -aux --sort -pcpu
+- top
+  - 当前服务器内存使用率 
+
+### 2.后台进程
+
+- 只需要在命令的后面添加一个&符号
+  - ping www.baidu.com >> baidu &
+- jobs -l
+  - 可以查看当前的后台进程
+  - 但是只有当前用户界面可以获取到
+- nohup可以防止后台进程被挂起
+  - nohup ping www.baidu.com >> baidu 2>&1 &
+
+### 3.杀死进程
+
+- kill -9 29948
+
+## 十三、Linux的软件安装
+
+### 1.环境变量
+
+Linux的环境变量是$PATH
+
+配置文件在/etc/profile
+
+window路径与路径之间用;分号连接
+
+Linux路径与路径之间用:冒号连接
+
+Linux每次修改完成之后，需要重新加载文件 source /etc/profile
+
+### 2.软件的安装方式
+
+- 解压直接使用
+- 使用安装包安装（window-exe；Linux-rpm）
+  - 自己下载安装包
+  - 使用统一的软件帮助安装
+- 通过源码安装
+
+### 3.RPM安装
+
+- RedHat Package Manager，属于红帽的一种包管理方式
+- 通过RPM命令安装软件
