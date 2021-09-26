@@ -852,4 +852,542 @@ Linux每次修改完成之后，需要重新加载文件 source /etc/profile
 ### 3.RPM安装
 
 - RedHat Package Manager，属于红帽的一种包管理方式
+
 - 通过RPM命令安装软件
+
+  - rpm -ivh jdk-8u301-linux-x64.rpm
+
+- 可以查询软件
+
+  - rpm -qa | grep jdk
+  - rpm -q jdk
+
+- 卸载
+
+  - rpm -e jdk1.8-1.8.0_301-fcs.x86_64
+
+- 需要手动配置Java的环境变量
+
+  - vim /etc/profile
+
+  - ```SHELL
+    export JAVA_HOME=/usr/java/jdk1.8.0_301-amd64
+    export PATH=$JAVA_HOME/bin:$PATH
+    ```
+
+  - 重新加载配置文件
+
+    - source /etc/profile
+
+### 4.压缩包解压安装
+
+- 解压文件
+  - tar -zxf apache-tomcat-8.5.71.tar.gz
+- 拷贝到/opt目录下
+  - cp -r apache-tomcat-8.5.71 /opt
+- 启动tomcat
+  - cd /opt/apache-tomcat-8.5.71/bin/
+  - ./startup.sh
+
+### 5.YUM安装
+
+#### 5.1yum的作用
+
+- 可以管理RPM包
+- 可以安装软件
+- 如果软件有其他依赖，会先安装依赖后再安装软件
+- 类似于Maven
+
+#### 5.2yum命令
+
+- search 查询命令或者软件
+  - yum search ifconfig
+- info 查看包的信息
+  - yum info ntp
+- list
+  - yum list 查看所有可安装的rpm包
+  - yum list java-1.8* 只查询某一种包
+
+5.3更换yum源
+
+- 首先安装wget
+  - yum install wget -y
+- 将系统原始配置文件失效
+  - mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+- 使用wget获取阿里yum源配置文件
+  - wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+- 清空以前yum源的缓存
+  - yum clean all
+- 获取阿里云的缓存
+  - yum makecache
+
+### 6.安装MySQL数据库
+
+```shell
+#----------安装MySQL依赖【perl net-tools】
+yum install perl net-tools -y
+#----------卸载mariadb
+rpm -qa | grep mariadb
+rpm -e --nodeps mariadb-libs-5.5.68-1.el7.x86_64
+#----------安装mysql
+tar -xvf mysql-5.7.35-1.el7.x86_64.rpm-bundle.tar
+
+rpm -ivh mysql-community-common-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-libs-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-server-5.7.35-1.el7.x86_64.rpm
+
+#---------启动mysql
+systemctl start mysqld
+
+#--------查找密码并登陆mysql
+cat /var/log/mysqld.log | grep password
+mysql -u root -p
+#--------修改mysql密码
+set global validate_password_policy=low;
+set global validate_password_length=6;
+alter user root@localhost identified by '123456';
+
+#--------修改MySQL链接地址
+use mysql;
+update user set host='%' where user = 'root';
+commit;
+exit;
+
+systemctl restart mysqld;
+#--------使用Navicat连接MySQL
+```
+
+## 十四、Linux的三剑客
+
+### 1.普通剑客
+
+- cut
+  - 用指定的规则来切分文本
+  - cut -d':' -f1,2,3 passwd | grep mysql
+- sort
+  - sort abc
+    - 对文本中的行进行排序
+  - sort -t ' ' -k2 abc
+    - 对每一行的数据用' '进行切分，按照第二列进行排序
+  - sort -t' ' -k2 -r abc
+    - 逆序
+  - sort -t' ' -k2 -n abc
+    - 按照数值大小进行排序，如果有字母，字母在前
+- wc
+  - 统计单词的数量
+  - wc abc
+  - 4 15 79 abc
+    - -l  几行 line
+    - -w  几个单词 word
+    - -c  几个字符 char
+
+### 2.剑客1号：grep
+
+- 可以对文本进行搜索
+- 同时搜索多个文件
+  - grep 10 passwd abc 在passwd和abc中搜索10这个字符串
+- 显示匹配的行号
+  - grep -n abc passwd
+- 显示不匹配的忽略大小写
+  - grep -nvi abc passwd --color=auto 参数加v是显示不匹配的，i是忽略大小写
+- 使用正则表达式匹配
+  - grep -E "[1-9]+" passwd --color=auto
+
+### 3.剑客2号：sed
+
+- sed是Stream Editor（字符流编辑器）的缩写，简称流编辑器
+- sed软件从文件或管道中读取一行，处理一行，输出一行；再读取一行，再处理一行，再输出一行
+- 一次一行的设计使得sed软件性能很高
+- vi命令打开文件是一次性将文件加载到内存
+- 了解即可
+  - https://www.cnblogs.com/chensiqiqi/p/6382080.html
+- 行的选择模式
+  - 10 第十行
+  - m,n -->第m行到第n行 [m,n]
+  - m,+n-->第m行开始加n行[m,m+n]
+  - m~n-->从m行开始，每隔n行处理一次，n是步长
+  - m,$ -->从m开始到最后一行
+  - /school/ -->匹配到school的行
+  - /u1/,/u4/ -->从匹配u1到匹配u4
+- 增
+  - sed '2a abcd' passwd 实际上文件没改动
+  - sed '2i abcd' passwd
+    - 打印到控制台
+  - sed -i '2a abcd' passwd
+    - 直接修改到文件
+- 删
+  - sed '3,10d' passwd 删除3到10行
+- 改
+  - 整行替换
+    - sed '3,20c abcd' passwd
+    - sed '3~1c abcd' passwd
+  - 字符替换
+    - sed '1,5s/root/abc/g' passwd
+    - sed '1,5s#/#-#g' passwd
+
+### 4.剑客3号：awk
+
+- 它不是一个剑客，它是一门语言
+- 了解即可
+  - https://www.cnblogs.com/chensiqiqi/p/6481647.html
+- 模式与动作
+  - awk -F ":" 'NR>=2&&NR<=6' /etc/passwd  （NR是行号）
+  - awk -F ":" '{print NR,$1}' /etc/passwd
+  - awk -F ":" 'NR>=2&&NR<=6 {print NR,$1}' /etc/passwd
+  - awk -F ":" 'NR==1 {print NR,$1} NR\==2{print NR,$NF}' /etc/passwd  （NF最后一行）
+
+## 十五、Linux的shell编程
+
+### 1.名词解释
+
+- Kernel
+  - Linux内核主要是为了和硬件打交道
+- Shell
+  - Shell是一个用C语言编写的程序，它是用户使用Linux的桥梁。Shell既是一种命令语言，又是一种程序设计语言。
+  - Shell是指一种应用程序，这个应用程序提供了一个界面，用户通过这个界面访问操作系统内核的服务。
+- Shell环境
+  - 只要有一个能编写代码的文本编辑器和一个能解释执行的脚本解释器就可以了。
+  - Bourne Shell (/usr/bin/sh或/bin/sh)
+  - Bourne Again Shell (/bin/bash) --默认
+  - C Shell (/usr/bin/csh)
+- #!声明
+  - 告诉系统其后路径所指定的程序既是解释此脚本文件的Shell程序
+
+### 2.执行Shell的方式
+
+- ./abc.sh
+  - 执行的必须是一个可执行文件
+  - chmod u+x abc.sh
+  - 会开启一个子进程执行脚本
+  - 7080 (ssh) --> 12826(./var.sh) --> 12827(ping)
+- sh abc.sh
+  - 执行的文件可以是一个普通文件
+- source abc.sh
+  - 直接在当前进程执行脚本
+  - 12661（ssh）--> 12797（ping）
+  - 当我们使用bash的时候开启一个子进程，当脚本中出现ping的时候又开启了一个子进程
+
+### 3.shell语法
+
+- 变量
+
+  - export：可以将当前进程的变量传递给子进程使用
+    - 将来配置profile的时候，所有的变量前必须加export
+
+- ```shell
+  #! /bin/bash
+  echo -e "\e[1;31m【-------在opt和var创建test文件夹】\e[0m"
+  echo -e "\e[1;31m【-------禁用防火墙】\e[0m"
+  echo -e "\e[1;32m【-------修改selinux】\e[0m"
+  echo -e "\e[1;32m【-------安装wget】\e[0m"
+  echo -e "\e[1;33m【-------修改yum源】\e[0m"
+  echo -e "\e[1;33m【-------安装常用软件man man-pages ntp vim lrzsz unzip】\e[0m"
+  echo -e "\e[1;34m【-------DNS域名配置】\e[0m"
+  echo -e "\e[1;34m【-------安装JDK】\e[0m"
+  echo -e "\e[1;35m【-------安装Tomcat】\e[0m"
+  echo -e "\e[1;35m【-------安装Niginx】\e[0m"
+  echo -e "\e[1;36m【-------设置开机启动项】\e[0m"
+  echo -e "\e[1;36m【-------删除文件】\e[0m"
+  shutdown -h now
+  ```
+
+## 十六、Linux的启动流程
+
+### 1.系统启动流程
+
+- 启动计算机的硬件（BIOS）
+
+  - 读取时间
+  - 选择对应的启动模式
+
+- 如果是Linux系统，回去找/boot目录。引导这个系统启动
+
+- 计算机系统开始启动，读取初始化配置文件
+
+  - vim /etc/inittab
+
+  - 启动时控制着计算机的运行级别runlevel
+
+  - | 0    | halt（关机）                                                 |
+    | ---- | ------------------------------------------------------------ |
+    | 1    | Single user mode（单用户模式）                               |
+    | 2    | Multiuser，without NFS（多用户模式，但是无网络状态）FS-->FileSystem |
+    | 3    | Full multiuser mode（多用户完整版模式）                      |
+    | 4    | unused（保留模式）                                           |
+    | 5    | X11（用户界面模式）                                          |
+    | 6    | reboot（重启模式）                                           |
+
+  - id:3:initdefault:默认runlevel为3
+
+  - 以runlecel=3开始启动对应的服务和组件
+
+- 开始默认引导公共的组件或者服务
+
+  - vim /etc/rc.d/rc.sysinit
+
+- 开始加载对应runlevel的服务
+
+  - vi /etc/rc3.d/
+    - K：关机时需要关闭的服务
+    - S：启动时需要开启的服务
+    - 数字代表了开启或者关闭的顺序
+    - 所有的文件都是软连接，链接的地址为/etc/init.d
+
+- 当启动完毕，所有的服务也被加载完成
+
+### 2.系统服务
+
+- 我们可以使用chkconfig命令查看当前虚拟机的服务
+- 通过查看可以得知不同的级别对应到每一个服务确定本次开机自动启动
+- 开机结束后，我们需要使用service（CentOS6）systemctl（CentOS7）命令控制服务的开启或者关闭
+
+### 3.开机自启动服务
+
+- rc.local
+
+  - 首先创建脚本存放的文件夹
+    - mkdir -p /usr/local/scripts
+  - 在文件夹中创建脚本文件
+    - vim hello.sh
+    - 给予执行权限
+  - 去/etc/rc.d/rc.local文件中添加脚本的绝对路径
+    - 给予rc.local执行权限
+
+- chkconfig
+
+  - 创建开机自启动脚本文件
+
+  - vim autostart.sh
+
+  - ```shell
+    #!/bin/bash
+    #chkconfig: 2345 88 99
+    #description:auto_run
+    
+    #开机自启动同步时间
+    yum info ntp && ntpdate cn.ntp.org.cn
+    ```
+
+  - 给其设置执行权限
+
+    - chmod u+x autostart.sh
+
+  - 将脚本拷贝到/etc/init.d目录下
+
+    - cp autostart.sh /etc/init.d
+
+  - 添加到服务
+
+    - chkconfig --add /etc/init.d/autostart.sh
+
+  - 重启服务器
+
+    - reboot
+
+### 4.定时任务
+
+- 在系统服务中心，crond负责周期任务
+
+  - systemctl status crond.service
+
+- 添加任务，编辑当前用户的任务列表
+
+  - crontab -e
+
+- 编辑任务
+
+  - 星 星 星 星 星 command
+
+    分 时 日 月 周 命令
+
+    第1列表示分钟1~59 每分钟用\*或者\*/1表示
+
+    第2列表示小时0~23（0表示0点）
+
+    第3列表示日期1~31
+
+    第4列表示月份1~12
+
+    第5列表示星期0~6（0表示星期天）
+
+    第6列是要运行的命令
+
+    *：表示任意时间都，实际上就是“每”的意思。可以代表00-23小时或者00-12每月或者00-59分
+
+    -：表示区间，是一个范围，00 17-19 * * * cmd，就是每天17，18，19点的整点执行命令
+
+    ,：是分割时段，30 3，19，21 * * * cmd，就是每天3，19，21点的半点时执行命令
+
+    /n：表示分割，可以看成除法，*/5 * * * * cmd，每隔五分钟执行一次
+
+  - ```shell
+    30 21 * * * /usr/local/etc/rc.d/lighttpd restart
+    上面的例子表示每晚的21:30重启apache。
+    
+    45 4 1,10,22 * * /usr/local/etc/rc.d/lighttpd restart
+    每月的1，10，22号的4：45分重启apache
+    
+    10 1 * * 6,0 /usr/local/etc/rc.d/lighttpd restart
+    每周六、周日的1：10分重启apache
+    
+    0,30 18-23 * * * /usr/local/etc/rc.d/lighttpd restart
+    每天18到23点的每个整点和半点重启apache
+    
+    0 23 * * 6 /usr/local/etc/rc.d/lighttpd restart
+    每周六的23点重启apache
+    
+    * */2 * * * /usr/local/etc/rc.d/lighttpd restart
+    每两个小时重启apache
+    
+    * 23-7/1 * * * /usr/local/etc/rc.d/lighttpd restart
+    每天23点到7点之间每1小时重启apache
+    
+    0 11 4 * mon-wen /usr/local/etc/rc.d/lighttpd restart
+    每月的4号和周一到周三的11点重启apache
+    
+    0 4 1 jan * /usr/local/etc/rc.d/lighttpd restart
+    一月一日的4点重启apache
+    ```
+
+- 重启crontab，使配置生效
+
+  - systemctl restart crond.service
+
+- 通过crontab -l
+
+  - 查看当前的定时任务
+
+- 查看任务的历史
+
+  - vim /var/spool/mail/root
+
+- 清除任务
+
+  - crontab -r
+
+## 十七、虚拟机初始化脚本
+
+> ``中的字符串当做命令去执行
+
+```shell
+#! /bin/bash
+## -bash: ./testinit.sh: /bin/bash^M: bad interpreter: No such file or directory
+## vim或者vi的命令模式下，输入命令 set fileformat=unix 即可解决换行问题
+
+echo -e "\e[1;31m【-------在opt和var创建test文件夹】\e[0m"
+mkdir -p /opt/test
+mkdir -p /var/test
+mkdir -p /usr/local/script
+
+echo -e "\e[1;31m【-------禁用防火墙】\e[0m"
+systemctl stop firewalld
+systemctl disable firewalld
+systemctl status firewalld
+
+echo -e "\e[1;32m【-------修改selinux】\e[0m"
+sed -i '/^SELINUX=/c SELINUX=disabled' /etc/selinux/config
+
+echo -e "\e[1;32m【-------安装wget】\e[0m"
+yum install wget -y
+
+echo -e "\e[1;33m【-------修改yum源】\e[0m"
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+yum clean all
+yum makecache
+
+echo -e "\e[1;33m【-------安装常用软件man man-pages ntp vim lrzsz unzip telnet】\e[0m"
+yum install man man-pages ntp vim lrzsz unzip telnet -y
+
+echo -e "\e[1;34m【-------同步时间】\e[0m"
+yum info ntp && ntpdate cn.ntp.org.cn
+
+echo -e "\e[1;34m【-------DNS域名配置】\e[0m"
+echo "192.168.11.100 centos-test1" >> /etc/hosts
+echo "192.168.11.101 test1" >> /etc/hosts
+echo "192.168.11.102 test2" >> /etc/hosts
+echo "192.168.11.103 test3" >> /etc/hosts
+
+echo -e "\e[1;34m【-------安装JDK】\e[0m"
+rpm -ivh jdk-8u301-linux-x64.rpm
+echo 'export JAVA_HOME=/usr/java/jdk1.8.0_301-amd64' >> /etc/profile
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile
+source /etc/profile
+
+echo -e "\e[1;35m【-------安装Tomcat】\e[0m"
+tar -zxf apache-tomcat-8.5.71.tar.gz
+mv  apache-tomcat-8.5.71 /opt/test/
+
+echo -e "\e[1;35m【-------安装Niginx】\e[0m"
+
+echo -e "\e[1;35m【-------安装Mysql】\e[0m"
+rpm -e --nodeps `rpm -qa | grep mariadb`
+yum install perl net-tools -y
+tar -xvf mysql-5.7.35-1.el7.x86_64.rpm-bundle.tar
+
+rpm -ivh mysql-community-common-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-libs-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.35-1.el7.x86_64.rpm
+rpm -ivh mysql-community-server-5.7.35-1.el7.x86_64.rpm
+
+systemctl start mysqld
+systemctl enable mysqld
+
+temppasswd=`grep "A temporary password" /var/log/mysqld.log | awk '{ print $NF }'`
+
+mysql -u root -p$temppasswd --connect-expired-password << EOF
+set global validate_password_policy=low;
+set global validate_password_length=6;
+alter user root@localhost identified by '123456';
+
+use mysql;
+update user set host='%' where user = 'root';
+commit;
+quit
+EOF
+
+systemctl restart mysqld
+
+echo -e "\e[1;36m【-------设置开机启动项】\e[0m"
+touch /usr/local/script/auto_ntpdate.sh
+echo '#!/bin/bash' >> /usr/local/script/auto_ntpdate.sh
+echo 'yum info ntp && ntpdate cn.ntp.org.cn' >> /usr/local/script/auto_ntpdate.sh
+chmod u+x /usr/local/script/auto_ntpdate.sh
+echo '/usr/local/script/auto_ntpdate.sh' >> /etc/rc.local
+chmod u+x /etc/rc.local
+
+echo -e "\e[1;36m【-------删除文件】\e[0m"
+rm -rf apache-tomcat-8.5.71.tar.gz
+rm -rf jdk-8u301-linux-x64.rpm
+rm -rf mysql*
+rm -rf *.sh
+
+echo -e "\e[1;36m【-------关闭计算机，拍快照】\e[0m"
+sleep 5
+shutdown -h now
+
+```
+
+## 十八、虚拟机相互免密钥
+
+```shell
+##三台主机分别生成秘钥
+[123] ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+##host验证
+[123] vim /etc/ssh/ssh_config
+	最后面添加：
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null
+##将秘钥分别拷贝给自己和别人(不输入ip输入hostname的前提，做了上一步并且hosts中有加入该ip)
+[123] ssh-copy-id -i ~/.ssh/id_rsa.pub root@test1
+[123] 输入密码123456
+[123] ssh-copy-id -i ~/.ssh/id_rsa.pub root@test2
+[123] 输入密码123456
+[123] ssh-copy-id -i ~/.ssh/id_rsa.pub root@test3
+[123] 输入密码123456
+
+##关闭主机拍摄快照
+shutdown -h now
+```
+
