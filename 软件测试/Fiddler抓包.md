@@ -32,13 +32,54 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 - 界面左侧Web Sessions会话列表中的是HTTP数据包。
 
-- 界面右侧Inspectors中，上边是Request请求信息，下边是Response响应信息。
+- 界面右侧Inspectors用于查看会话的内容，上边是Request请求信息，下边是Response响应信息。
+
+- **字段说明**
+
+  - | **名称**                                                     | **含义**                                                   |
+    | :----------------------------------------------------------- | :--------------------------------------------------------- |
+    | #                                                            | 抓取HTTP Request的顺序，从1开始，以此递增                  |
+    | Result                                                       | HTTP状态码                                                 |
+    | Protocol                                                     | 请求使用的协议，如HTTP/HTTPS/FTP等                         |
+    | Host                                                         | 请求地址的主机名                                           |
+    | URL                                                          | 请求资源的位置                                             |
+    | Body                                                         | 该请求的大小                                               |
+    | Caching                                                      | 请求的缓存过期时间或者缓存控制值                           |
+    | Content-Type                                                 | 请求响应的类型                                             |
+    | Process                                                      | 发送此请求的进程：进程ID                                   |
+    | Comments                                                     | 允许用户为此回话添加备注                                   |
+    | Custom                                                       | 允许用户设置自定义值                                       |
+    | 图标                                                         | 含义                                                       |
+    | ![clip_image001[13]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234159468-1047137951.gif) | 请求已经发往服务器                                         |
+    | ![clip_image002[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234200047-1757509080.gif) | 已从服务器下载响应结果                                     |
+    | ![clip_image003[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234201406-1416873112.gif) | 请求从断点处暂停                                           |
+    | ![clip_image004[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234202375-1737717316.gif) | 响应从断点处暂停                                           |
+    | ![clip_image005[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234202812-1354392122.gif) | 请求使用 HTTP 的 HEAD 方法，即响应没有内容（Body）         |
+    | ![clip_image006[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234203515-1304170577.png) | 请求使用 HTTP 的 POST 方法                                 |
+    | ![clip_image007[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234204531-965189067.gif) | 请求使用 HTTP 的 CONNECT 方法，使用 HTTPS 协议建立连接隧道 |
+    | ![clip_image008[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234205547-1927498766.gif) | 响应是 HTML 格式                                           |
+    | ![clip_image009[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234206203-722749081.gif) | 响应是一张图片                                             |
+    | ![clip_image010[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234207000-575730385.gif) | 响应是脚本格式                                             |
+    | ![clip_image011[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234207625-740567358.gif) | 响应是 CSS 格式                                            |
+    | ![clip_image012[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234208297-916097140.gif) | 响应是 XML 格式                                            |
+    | ![clip_image013[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234209640-1298497869.png) | 响应是 JSON 格式                                           |
+    | ![clip_image014[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234210172-1709733575.png) | 响应是一个音频文件                                         |
+    | ![clip_image015[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234210703-1810906238.png) | 响应是一个视频文件                                         |
+    | ![clip_image016[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234211297-1181901939.png) | 响应是一个 SilverLight                                     |
+    | ![clip_image017[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234213515-1617989240.png) | 响应是一个 FLASH                                           |
+    | ![clip_image018[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234214140-838447913.png) | 响应是一个字体                                             |
+    | ![clip_image019[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234214828-810550242.gif) | 普通响应成功                                               |
+    | ![clip_image020[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234215406-1088186512.gif) | 响应是 HTTP/300、301、302、303 或 307 重定向               |
+    | ![clip_image021[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234216015-2008519780.gif) | 响应是 HTTP/304（无变更）：使用缓存文件                    |
+    | ![clip_image022[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234216531-1803780843.gif) | 响应需要客户端证书验证                                     |
+    | ![clip_image023[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234217078-1617370921.gif) | 服务端错误                                                 |
+    | ![clip_image0244](https://images2015.cnblogs.com/blog/626593/201601/626593-20160119000324093-1538967179.gif) | 会话被客户端、Fiddler 或者服务端终止                       |
 
 #### 1.2删除请求
 
 - 方法1：点击工具栏中的×，删除请求。
-
 - 方法2：session列表下的黑框QuickExec中输入cls或clear删除请求。
+- 快捷键Ctrl+x
 
 #### 1.3过滤请求
 
@@ -61,7 +102,36 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 ![image-20211004021645713](Fiddler抓包.assets/image-20211004021645713.png)
 
-### 3.典型应用
+### 3.Fiddler内置命令与断点
+
+FIddler断点功能就是将请求截获下来，但是不发送，此时可以做一些更改操作。
+
+- QuickExec命令
+
+| **命令** | **对应请求项** | **介绍**                                                     | **示例**       |
+| :------- | :------------- | :----------------------------------------------------------- | :------------- |
+| ?        | All            | 问号后边跟一个字符串，可以匹配出包含这个字符串的请求         | ?google        |
+| >        | Body           | 大于号后面跟一个数字，可以匹配出请求大小，大于这个数字请求   | >1000          |
+| <        | Body           | 小于号跟大于号相反，匹配出请求大小，小于这个数字的请求       | <100           |
+| =        | Result         | 等于号后面跟数字，可以匹配HTTP返回码                         | =200           |
+| @        | Host           | @后面跟Host，可以匹配域名                                    | @www.baidu.com |
+| select   | Content-Type   | select后面跟响应类型，可以匹配到相关的类型                   | select image   |
+| cls      | All            | 清空当前所有请求                                             | cls            |
+| dump     | All            | 将所有请求打包成saz压缩包，保存到“我的文档\Fiddler2\Captures”目录下 | dump           |
+| start    | All            | 开始监听请求                                                 | start          |
+| stop     | All            | 停止监听请求                                                 | stop           |
+
+- 断点命令
+
+| **断点命令** |          |                                                         |                                      |
+| :----------: | -------- | ------------------------------------------------------- | ------------------------------------ |
+|   bpafter    | All      | bpafter后边跟一个字符串，表示中断所有包含该字符串的请求 | bpafter baidu（输入bpafter解除断点） |
+|     bpu      | All      | 跟bpafter差不多，只不过这个是收到请求了，中断响应       | bpu baidu（输入bpu解除断点）         |
+|     bps      | Result   | 后面跟状态吗，表示中断所有是这个状态码的请求            | bps 200（输入bps解除断点）           |
+|  bpv / bpm   | HTTP方法 | 只中断HTTP方法的命令，HTTP方法如POST、GET               | bpv get（输入bpv解除断点）           |
+|    g / go    | All      | 放行所有中断下来的请求                                  | g                                    |
+
+### 4.典型应用
 
 - web网页、手机APP抓包
 
@@ -96,6 +166,7 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 #### 2.1模拟发送请求
 
+- Composer允许自定义请求发送到服务器，可以手动创建一个新的请求，也可以在会话表中，拖拽一个现有的请求
 - 点击Composer
 - 设置请求方法，请求地址、协议
 - 设置请求header
@@ -105,6 +176,7 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 #### 2.2模拟返回相应数据
 
+- AutoResponder允许拦截指定规则的请求，并返回本地资源或Fiddler资源，从而代替服务器响应。
 - 点击AutoResponder
 - 选择请求，点击Add Rule添加规则
 - Rule Editor中选择响应方式
@@ -159,11 +231,9 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 ### 4.前端性能分析及优化
 
 - 选中想查看的session列表
-- 点击Statistics进行数据统计
+- 点击Statistics进行请求的性能数据分析
 - 点击Collapse Chart即可查看所用语言的所占比
 - 点击Timeline即可查看页面各个元素的加载时间和顺序
-
-
 
 
 
@@ -179,3 +249,14 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 4. 打开谷歌浏览器，设置--高级--安全--管理证书；
 5. 导入证书
 6. 重启浏览器与fiddler。
+
+### Q2.如何屏蔽抓取特定端口？
+
+在Fiddler中使用它，用Ctrl+R打开自定义规则，然后添加到OnBeforeRequest。
+
+```js
+if (oSession.host=="localhost:9090"){
+    oSession["ui-hide"] = "true";
+}
+```
+
