@@ -34,6 +34,14 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 - 界面右侧Inspectors用于查看会话的内容，上边是Request请求信息，下边是Response响应信息。
 
+- 左下角空白处点击变成Capturing会开始抓包
+
+  - ALL Processes抓取所有包
+  - Web Browsers只抓取PC中浏览器的包
+  - Non-Browser抓取非浏览器的包
+  - Hide All隐藏所有代理
+    - 代理手机时，Capturing无论是否点击，都会自动抓包，抓取想要的包后，可点此隐藏其他抓包
+
 - **字段说明**
 
   - | **名称**                                                     | **含义**                                                   |
@@ -102,7 +110,20 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 ![image-20211004021645713](Fiddler抓包.assets/image-20211004021645713.png)
 
-### 3.Fiddler内置命令与断点
+### 3.移动端抓包
+
+- 手机和电脑必须在同一个局域网：
+  		1.手机和电脑连同一个WiFi
+    		2.手机连WiFi，电脑用网线连接开启这个WiFi的无线路由
+    		3.电脑开热点，手机连热点
+- 开启fiddler代理，Tools-Options-Connections ， 勾选 Allow remote computers to connect（尽量能勾选的都勾上）， 点击OK
+- 查看自己网卡IP
+- 在移动端连接wifi，并且设置代理IP（电脑端网卡IP）与端口（8888）
+- 移动端访问网页输入代理IP和端口，点击FiddlerRoot certificate下载Fiddler的证书
+- 安装证书（安装方式不同设备会有区别，可以自己试探或者上网找教程，如果不能安装显示不能读取证书可以试试去设置里搜索CA证书，验证密码后安装）
+- 安装证书成功后，可以用手机访问应用，就可以看到截取到的数据包
+
+### 4.Fiddler内置命令与断点
 
 FIddler断点功能就是将请求截获下来，但是不发送，此时可以做一些更改操作。
 
@@ -131,7 +152,7 @@ FIddler断点功能就是将请求截获下来，但是不发送，此时可以�
 |  bpv / bpm   | HTTP方法 | 只中断HTTP方法的命令，HTTP方法如POST、GET               | bpv get（输入bpv解除断点）           |
 |    g / go    | All      | 放行所有中断下来的请求                                  | g                                    |
 
-### 4.典型应用
+### 5.典型应用
 
 - web网页、手机APP抓包
 
@@ -202,6 +223,18 @@ FIddler断点功能就是将请求截获下来，但是不发送，此时可以�
                 oSession["request-trickle-delay"] = "300"; 
                 // Delay receives by 150ms per KB downloaded.
                 oSession["response-trickle-delay"] = "150"; 
+            }
+    ```
+    
+  - 在上述函数中用Math.random()方法可以模拟波动的网络
+
+  - ```js
+    if (m_SimulateModem) {
+        		var t = int(Math.random()*500)
+                // Delay sends by 300ms per KB uploaded.
+                oSession["request-trickle-delay"] = ""+ ( 2 * t ); 
+                // Delay receives by 150ms per KB downloaded.
+                oSession["response-trickle-delay"] = "" + t; 
             }
     ```
 
