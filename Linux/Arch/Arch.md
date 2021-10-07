@@ -87,7 +87,7 @@ archlinux-2021.10.01-x86_64.iso和archlinux-2021.10.01-x86_64.iso.sig
 
 - 如果不想安装可以验证MD5和SHA1
 
-  - ```
+  - ```shell
     $ md5sum archlinux-2021.10.01-x86_64.iso
     c76867784b21d6f70cb156d9d1f113db archlinux-2021.10.01-x86_64.iso
     
@@ -95,5 +95,46 @@ archlinux-2021.10.01-x86_64.iso和archlinux-2021.10.01-x86_64.iso.sig
     77a20dcd9d838398cebb2c7c15f46946bdc3855e archlinux-2021.10.01-x86_64.iso
     ```
 
+### 3.创建虚拟机
 
+*如果用虚拟机安装*
+
+- 创建一个虚拟机，视情况给配置
+
+  - Linux版本选其他Linux或更高版本内核64位（不重要，选哪个没差）
+  - CD/DVD选Arch的ISO文件
+  - 网络选择NAT
+  - 处理器和内存硬盘视情况给
+  - 其他基本默认就好
+
+- **更改固件类型为UEFI**
+
+  - 虚拟机设置--选项--高级--固件类型--勾选UEFI
+
+  - 强烈建议更改成UEFI，虽然BIOS也可以，但是有些落后，实体机也基本上都是UEFI了，教程也是UEFI居多。
+
+  - > 安装archlinux BIOS 启动 和 UEFI 启动有哪些不同 ?
+    >
+    > ### 在创建启动分区时
+    >
+    > BIOS模式建立：mkdir /mnt/boot
+    > UEFI模式建立：mkdir -p /mnt/boot/EFI
+    >
+    > ### 挂载时
+    >
+    > BIOS模式挂载：mount /dev/sda2 /mnt/boot
+    > UEFI模式挂载：mount /dev/sda2 /mnt/boot/EFI
+    >
+    > ### 安装grub引导系统启动时
+    >
+    > 所以我们使用这个引导器。在单系统并且BIOS启动时，只需要grub就够了。UEFI启动还需要安装efibootmgr
+    >
+    > ```sh
+    > pacman -S grub efibootmgr
+    > ```
+    >
+    > 简而言之就是BIOS启动时安装 grub 即可
+    > 如果时UEFI启动时，grub 和 efibootmgr 都需要安装
+
+## 二、安装
 
