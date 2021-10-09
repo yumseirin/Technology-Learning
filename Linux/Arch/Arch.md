@@ -138,3 +138,104 @@ archlinux-2021.10.01-x86_64.iso和archlinux-2021.10.01-x86_64.iso.sig
 
 ## 二、安装
 
+### 1.启动虚拟机（或实体机）
+
+- 更改屏幕显示大小*（可略，就是为了安装的时候看着方便点）*
+  - 开机后直接按E，输入下方命令*（记得空格分隔）*
+  - nomodeset video=800x450
+- 光标选在第一行（开启后默认的那个，不动就可以），回车
+- 设置字体（可略，找个方便看大点的字体）
+  - setfont /usr/share/kbd/consolefonts/LatGrkCyr-12x12.psfu.gz
+
+### 2.联网
+
+- 虚拟机NAT连接和实体机直插网线应该直接就可以联网，ping一下百度试试就知道了
+
+- 如果不能联网，比如需要连接WiFi
+
+- ip link     查看网络接口
+
+- ```sh
+  ip link set wlan0 up  #启用wlan0，这是一个无线网络接口的名，可能会不同
+  ```
+
+- 开启无线网络接口后，查询附近可连接WiFi的名
+
+- ```sh
+  iwlist wlan0 scan | grep ESSID
+  ```
+
+- wpa_passphrase 检索出来的网络名 密码 > 文件名
+
+  - 如 wpa_passphrase SR_Wifi 123456 > internet.conf
+
+- ```sh
+  wpa_supplicant -c internet.conf -i wlan0 & #通过这个配置文件连接网络
+  ```
+
+- ```sh
+  dhcpcd &  #动态分配ip
+  ```
+
+### 3.同步系统时间
+
+- ```sh
+  timedatectl set-ntp true
+  ```
+
+### 4.硬盘分区
+
+- 查看磁盘信息
+
+  - ```sh
+    fdisk -l
+    ```
+
+- 使用fdisk工具分区
+
+  - ```sh
+    fdisk /dev/sda  #这是被分区磁盘的位置，磁盘名会有不同
+    ```
+
+  - Command（m for help）
+
+    - 输入m得到帮助信息
+    - 输入p输出所有分区信息
+    - 输入g创建一个空的GPT分区（也就是清空该磁盘所有数据）
+
+  - 创建引导分区
+
+    - 输入n添加分区
+    - Partition number：分区号直接回车，默认1号
+    - First sector：从磁盘哪里开始，直接默认回车
+    - Last sector：问磁盘到哪里，就是分多大，输入+512M回车
+
+  - 创建SWAP
+
+    - 输入n
+    - Partition number：输入3
+    - First sector：直接默认回车，他会从上一个分配的磁盘尾部开始
+    - Last sector：输入+2G回车（swap视情况给，我给的内存超过2G所以swap也给了2G，内存不到2G可以给内存同等量）
+
+  - 创建主分区（/根目录）
+
+    - 输入n
+    - Partition number：默认2回车
+    - First sector：直接默认回车
+    - Last sector：直接默认回车，会将剩余所有磁盘空间都分配给主分区
+
+  - 输入p确认分区内容（此时并没有真的对磁盘分区做改变）
+
+  - 输入w保存分区
+
+- 格式化分区
+
+  - 格式化引导分区
+    - mkfs.fat -F32 /dev/sda1
+    - /dev/sda1是引导分区，引导分区必须是fat32格式
+  - 格式化主分区
+    - mkfs.ext4 /dev/sda2
+  - 格式化swap
+    - mkswap /dev/sda3   #制作swap
+    - swapon /dev/sda3   #激活打开swap
+
