@@ -209,7 +209,7 @@ Linux 系统中，所有系统默认的软件都存储在 /usr 目录下，/usr 
   - 命令未安装
 - type 命令
   - type工具用于显示命令的类型信息。它将展示在命令行上输入给定的命令将如何解释。
-  - ls is aliased to `ls --color=tty'
+  - ls is aliased to  ls --color=tty
   - cd is a shell builtin
   - vim is hashed (/usr/bin/vim)
   - sleep is /usr/bin/sleep
