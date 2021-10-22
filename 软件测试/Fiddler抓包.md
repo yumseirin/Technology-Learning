@@ -81,7 +81,7 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
     | ![响应HTTP304](Fiddler抓包.assets/响应HTTP304.png)      | 响应是 HTTP/304（无变更）：使用缓存文件                    |
     | ![响应需客户端证书验证](Fiddler抓包.assets/响应需客户端证书验证.png) | 响应需要客户端证书验证                                     |
     | ![服务端错误](Fiddler抓包.assets/服务端错误.png)       | 服务端错误                                                 |
-    | ![clip_image0244](Fiddler抓包.assets/会话被终止.png)         | 会话被客户端、Fiddler 或者服务端终止                       |
+    | ![会话被终止](Fiddler抓包.assets/会话被终止.png)         | 会话被客户端、Fiddler 或者服务端终止                       |
 
 #### 1.2删除请求
 
