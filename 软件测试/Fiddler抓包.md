@@ -44,44 +44,44 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
 
 - **字段说明**
 
-  - | **名称**                                                     | **含义**                                                   |
-    | :----------------------------------------------------------- | :--------------------------------------------------------- |
-    | #                                                            | 抓取HTTP Request的顺序，从1开始，以此递增                  |
-    | Result                                                       | HTTP状态码                                                 |
-    | Protocol                                                     | 请求使用的协议，如HTTP/HTTPS/FTP等                         |
-    | Host                                                         | 请求地址的主机名                                           |
-    | URL                                                          | 请求资源的位置                                             |
-    | Body                                                         | 该请求的大小                                               |
-    | Caching                                                      | 请求的缓存过期时间或者缓存控制值                           |
-    | Content-Type                                                 | 请求响应的类型                                             |
-    | Process                                                      | 发送此请求的进程：进程ID                                   |
-    | Comments                                                     | 允许用户为此回话添加备注                                   |
-    | Custom                                                       | 允许用户设置自定义值                                       |
-    | 图标                                                         | 含义                                                       |
-    | ![请求发往服务器](Fiddler抓包.assets/请求发往服务器.png)  | 请求已经发往服务器                                         |
+  - |                           **名称**                           | **含义**                                                   |
+    | :----------------------------------------------------------: | :--------------------------------------------------------- |
+    |                              #                               | 抓取HTTP Request的顺序，从1开始，以此递增                  |
+    |                            Result                            | HTTP状态码                                                 |
+    |                           Protocol                           | 请求使用的协议，如HTTP/HTTPS/FTP等                         |
+    |                             Host                             | 请求地址的主机名                                           |
+    |                             URL                              | 请求资源的位置                                             |
+    |                             Body                             | 该请求的大小                                               |
+    |                           Caching                            | 请求的缓存过期时间或者缓存控制值                           |
+    |                         Content-Type                         | 请求响应的类型                                             |
+    |                           Process                            | 发送此请求的进程：进程ID                                   |
+    |                           Comments                           | 允许用户为此回话添加备注                                   |
+    |                            Custom                            | 允许用户设置自定义值                                       |
+    |                           **图标**                           | **含义**                                                   |
+    |   ![请求发往服务器](Fiddler抓包.assets/请求发往服务器.png)   | 请求已经发往服务器                                         |
     | ![从服务器下载响应结果](Fiddler抓包.assets/从服务器下载响应结果.png) | 已从服务器下载响应结果                                     |
-    | ![请求断点暂停](Fiddler抓包.assets/请求断点暂停.png)     | 请求从断点处暂停                                           |
-    | ![响应断点暂停](Fiddler抓包.assets/响应断点暂停.png)     | 响应从断点处暂停                                           |
-    | ![请求HEAD方法](Fiddler抓包.assets/请求HEAD方法.png)     | 请求使用 HTTP 的 HEAD 方法，即响应没有内容（Body）         |
-    | ![请求POST方法](Fiddler抓包.assets/请求POST方法.png)     | 请求使用 HTTP 的 POST 方法                                 |
-    | ![请求CONNECT方法](Fiddler抓包.assets/请求CONNECT方法.png)  | 请求使用 HTTP 的 CONNECT 方法，使用 HTTPS 协议建立连接隧道 |
-    | ![响应HTML](Fiddler抓包.assets/响应HTML.png)         | 响应是 HTML 格式                                           |
-    | ![响应图片](Fiddler抓包.assets/响应图片.png)         | 响应是一张图片                                             |
-    | ![响应脚本](Fiddler抓包.assets/响应脚本.png)         | 响应是脚本格式                                             |
-    | ![响应CSS](Fiddler抓包.assets/响应CSS.png)          | 响应是 CSS 格式                                            |
-    | ![响应XML](Fiddler抓包.assets/响应XML.png)          | 响应是 XML 格式                                            |
-    | ![响应JSON](Fiddler抓包.assets/响应JSON.png)         | 响应是 JSON 格式                                           |
-    | ![响应音频](Fiddler抓包.assets/响应音频.png)         | 响应是一个音频文件                                         |
-    | ![响应视频](Fiddler抓包.assets/响应视频.png)         | 响应是一个视频文件                                         |
-    | ![响应SilverLight](Fiddler抓包.assets/响应SilverLight.png)  | 响应是一个 SilverLight                                     |
-    | ![响应FLASH](Fiddler抓包.assets/响应FLASH.png)        | 响应是一个 FLASH                                           |
-    | ![响应字体](Fiddler抓包.assets/响应字体.png)         | 响应是一个字体                                             |
-    | ![普通响应成功](Fiddler抓包.assets/普通响应成功.png)     | 普通响应成功                                               |
-    | ![响应HTTP重定向](Fiddler抓包.assets/响应HTTP重定向.png)   | 响应是 HTTP/300、301、302、303 或 307 重定向               |
-    | ![响应HTTP304](Fiddler抓包.assets/响应HTTP304.png)      | 响应是 HTTP/304（无变更）：使用缓存文件                    |
+    |     ![请求断点暂停](Fiddler抓包.assets/请求断点暂停.png)     | 请求从断点处暂停                                           |
+    |     ![响应断点暂停](Fiddler抓包.assets/响应断点暂停.png)     | 响应从断点处暂停                                           |
+    |     ![请求HEAD方法](Fiddler抓包.assets/请求HEAD方法.png)     | 请求使用 HTTP 的 HEAD 方法，即响应没有内容（Body）         |
+    |     ![请求POST方法](Fiddler抓包.assets/请求POST方法.png)     | 请求使用 HTTP 的 POST 方法                                 |
+    |  ![请求CONNECT方法](Fiddler抓包.assets/请求CONNECT方法.png)  | 请求使用 HTTP 的 CONNECT 方法，使用 HTTPS 协议建立连接隧道 |
+    |         ![响应HTML](Fiddler抓包.assets/响应HTML.png)         | 响应是 HTML 格式                                           |
+    |         ![响应图片](Fiddler抓包.assets/响应图片.png)         | 响应是一张图片                                             |
+    |         ![响应脚本](Fiddler抓包.assets/响应脚本.png)         | 响应是脚本格式                                             |
+    |          ![响应CSS](Fiddler抓包.assets/响应CSS.png)          | 响应是 CSS 格式                                            |
+    |          ![响应XML](Fiddler抓包.assets/响应XML.png)          | 响应是 XML 格式                                            |
+    |         ![响应JSON](Fiddler抓包.assets/响应JSON.png)         | 响应是 JSON 格式                                           |
+    |         ![响应音频](Fiddler抓包.assets/响应音频.png)         | 响应是一个音频文件                                         |
+    |         ![响应视频](Fiddler抓包.assets/响应视频.png)         | 响应是一个视频文件                                         |
+    |  ![响应SilverLight](Fiddler抓包.assets/响应SilverLight.png)  | 响应是一个 SilverLight                                     |
+    |        ![响应FLASH](Fiddler抓包.assets/响应FLASH.png)        | 响应是一个 FLASH                                           |
+    |         ![响应字体](Fiddler抓包.assets/响应字体.png)         | 响应是一个字体                                             |
+    |     ![普通响应成功](Fiddler抓包.assets/普通响应成功.png)     | 普通响应成功                                               |
+    |   ![响应HTTP重定向](Fiddler抓包.assets/响应HTTP重定向.png)   | 响应是 HTTP/300、301、302、303 或 307 重定向               |
+    |      ![响应HTTP304](Fiddler抓包.assets/响应HTTP304.png)      | 响应是 HTTP/304（无变更）：使用缓存文件                    |
     | ![响应需客户端证书验证](Fiddler抓包.assets/响应需客户端证书验证.png) | 响应需要客户端证书验证                                     |
-    | ![服务端错误](Fiddler抓包.assets/服务端错误.png)       | 服务端错误                                                 |
-    | ![会话被终止](Fiddler抓包.assets/会话被终止.png)         | 会话被客户端、Fiddler 或者服务端终止                       |
+    |       ![服务端错误](Fiddler抓包.assets/服务端错误.png)       | 服务端错误                                                 |
+    |       ![会话被终止](Fiddler抓包.assets/会话被终止.png)       | 会话被客户端、Fiddler 或者服务端终止                       |
 
 #### 1.2删除请求
 
