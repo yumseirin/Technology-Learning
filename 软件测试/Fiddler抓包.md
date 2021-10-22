@@ -58,30 +58,30 @@ Fiddler Everywhere可以在所有平台使用，并且相当于Fiddler Classic+p
     | Comments                                                     | 允许用户为此回话添加备注                                   |
     | Custom                                                       | 允许用户设置自定义值                                       |
     | 图标                                                         | 含义                                                       |
-    | ![clip_image001[13]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234159468-1047137951.gif) | 请求已经发往服务器                                         |
-    | ![clip_image002[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234200047-1757509080.gif) | 已从服务器下载响应结果                                     |
-    | ![clip_image003[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234201406-1416873112.gif) | 请求从断点处暂停                                           |
-    | ![clip_image004[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234202375-1737717316.gif) | 响应从断点处暂停                                           |
-    | ![clip_image005[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234202812-1354392122.gif) | 请求使用 HTTP 的 HEAD 方法，即响应没有内容（Body）         |
-    | ![clip_image006[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234203515-1304170577.png) | 请求使用 HTTP 的 POST 方法                                 |
-    | ![clip_image007[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234204531-965189067.gif) | 请求使用 HTTP 的 CONNECT 方法，使用 HTTPS 协议建立连接隧道 |
-    | ![clip_image008[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234205547-1927498766.gif) | 响应是 HTML 格式                                           |
-    | ![clip_image009[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234206203-722749081.gif) | 响应是一张图片                                             |
-    | ![clip_image010[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234207000-575730385.gif) | 响应是脚本格式                                             |
-    | ![clip_image011[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234207625-740567358.gif) | 响应是 CSS 格式                                            |
-    | ![clip_image012[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234208297-916097140.gif) | 响应是 XML 格式                                            |
-    | ![clip_image013[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234209640-1298497869.png) | 响应是 JSON 格式                                           |
-    | ![clip_image014[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234210172-1709733575.png) | 响应是一个音频文件                                         |
-    | ![clip_image015[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234210703-1810906238.png) | 响应是一个视频文件                                         |
-    | ![clip_image016[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234211297-1181901939.png) | 响应是一个 SilverLight                                     |
-    | ![clip_image017[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234213515-1617989240.png) | 响应是一个 FLASH                                           |
-    | ![clip_image018[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234214140-838447913.png) | 响应是一个字体                                             |
-    | ![clip_image019[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234214828-810550242.gif) | 普通响应成功                                               |
-    | ![clip_image020[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234215406-1088186512.gif) | 响应是 HTTP/300、301、302、303 或 307 重定向               |
-    | ![clip_image021[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234216015-2008519780.gif) | 响应是 HTTP/304（无变更）：使用缓存文件                    |
-    | ![clip_image022[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234216531-1803780843.gif) | 响应需要客户端证书验证                                     |
-    | ![clip_image023[4]](https://images2015.cnblogs.com/blog/626593/201601/626593-20160118234217078-1617370921.gif) | 服务端错误                                                 |
-    | ![clip_image0244](https://images2015.cnblogs.com/blog/626593/201601/626593-20160119000324093-1538967179.gif) | 会话被客户端、Fiddler 或者服务端终止                       |
+    | ![请求发往服务器](Fiddler抓包.assets/请求发往服务器.png)  | 请求已经发往服务器                                         |
+    | ![从服务器下载响应结果](Fiddler抓包.assets/从服务器下载响应结果.png) | 已从服务器下载响应结果                                     |
+    | ![请求断点暂停](Fiddler抓包.assets/请求断点暂停.png)     | 请求从断点处暂停                                           |
+    | ![响应断点暂停](Fiddler抓包.assets/响应断点暂停.png)     | 响应从断点处暂停                                           |
+    | ![请求HEAD方法](Fiddler抓包.assets/请求HEAD方法.png)     | 请求使用 HTTP 的 HEAD 方法，即响应没有内容（Body）         |
+    | ![请求POST方法](Fiddler抓包.assets/请求POST方法.png)     | 请求使用 HTTP 的 POST 方法                                 |
+    | ![请求CONNECT方法](Fiddler抓包.assets/请求CONNECT方法.png)  | 请求使用 HTTP 的 CONNECT 方法，使用 HTTPS 协议建立连接隧道 |
+    | ![响应HTML](Fiddler抓包.assets/响应HTML.png)         | 响应是 HTML 格式                                           |
+    | ![响应图片](Fiddler抓包.assets/响应图片.png)         | 响应是一张图片                                             |
+    | ![响应脚本](Fiddler抓包.assets/响应脚本.png)         | 响应是脚本格式                                             |
+    | ![响应CSS](Fiddler抓包.assets/响应CSS.png)          | 响应是 CSS 格式                                            |
+    | ![响应XML](Fiddler抓包.assets/响应XML.png)          | 响应是 XML 格式                                            |
+    | ![响应JSON](Fiddler抓包.assets/响应JSON.png)         | 响应是 JSON 格式                                           |
+    | ![响应音频](Fiddler抓包.assets/响应音频.png)         | 响应是一个音频文件                                         |
+    | ![响应视频](Fiddler抓包.assets/响应视频.png)         | 响应是一个视频文件                                         |
+    | ![响应SilverLight](Fiddler抓包.assets/响应SilverLight.png)  | 响应是一个 SilverLight                                     |
+    | ![响应FLASH](Fiddler抓包.assets/响应FLASH.png)        | 响应是一个 FLASH                                           |
+    | ![响应字体](Fiddler抓包.assets/响应字体.png)         | 响应是一个字体                                             |
+    | ![普通响应成功](Fiddler抓包.assets/普通响应成功.png)     | 普通响应成功                                               |
+    | ![响应HTTP重定向](Fiddler抓包.assets/响应HTTP重定向.png)   | 响应是 HTTP/300、301、302、303 或 307 重定向               |
+    | ![响应HTTP304](Fiddler抓包.assets/响应HTTP304.png)      | 响应是 HTTP/304（无变更）：使用缓存文件                    |
+    | ![响应需客户端证书验证](Fiddler抓包.assets/响应需客户端证书验证.png) | 响应需要客户端证书验证                                     |
+    | ![服务端错误](Fiddler抓包.assets/服务端错误.png)       | 服务端错误                                                 |
+    | ![clip_image0244](Fiddler抓包.assets/会话被终止.png)         | 会话被客户端、Fiddler 或者服务端终止                       |
 
 #### 1.2删除请求
 
